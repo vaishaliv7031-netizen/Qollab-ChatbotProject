@@ -1,0 +1,786 @@
+{
+    "intents": [
+        {
+            "tag": "greeting",
+            "patterns": [
+                "hi",
+                "hello",
+                "hey",
+                "greetings"
+            ],
+            "responses": [
+                "Hello! Ready to dive deep into coding?",
+                "Hi there! What are we learning today?"
+            ]
+        },
+        {
+            "tag": "response",
+            "patterns": [
+                "yes",
+                "sure"
+            ],
+            "responses": [
+                "okay! let move ahead",
+                "great !"
+            ]
+        },
+        {
+            "tag": "language_query",
+            "patterns": [
+                "teach me python",
+                "i want to learn java",
+                "what about c programming"
+            ],
+            "responses": [
+                "Python is a great choice for beginners! It has simple syntax and powerful libraries.",
+                "Java is widely used in enterprise applications and Android development.",
+                "C is a foundational language that gives you a deep understanding of how computers work. Which one would you like to start with?"
+            ]
+        },
+        {
+            "tag": "introduction",
+            "patterns": [
+                "who are you ?",
+                "what can you do"
+            ],
+            "responses": [
+                "I am a coding tutor bot designed to provide deep-dive lessons on programming concepts and languages. I can help you understand everything from basic syntax to advanced topics in Python, Java, and C. Just ask about a topic or language, and I'll guide you through it!"
+            ]
+        },
+        {
+            "tag": "goodbye",
+            "patterns": [
+                "bye",
+                "goodbye",
+                "exit"
+            ],
+            "responses": [
+                "Keep practicing! Goodbye.",
+                "See you next time!"
+            ]
+        },
+        {
+            "tag": "help",
+            "patterns": [
+                "help",
+                "what can you do"
+            ],
+            "responses": [
+                "I provide deep-dive lessons on Programming",
+                "Python, Java, and C. Ask about a topic!"
+            ]
+        },
+        {
+            "tag": "thanks",
+            "patterns": [
+                "thanks",
+                "thank you"
+            ],
+            "responses": [
+                "You're welcome!",
+                "Anytime!"
+            ]
+        },
+        {
+            "tag": "fallback",
+            "patterns": [],
+            "responses": [
+                "I didn't quite catch that. Try asking about a specific language or topic."
+            ]
+        },
+        {
+            "tag": "learned_8",
+            "patterns": [
+                "what is c"
+            ],
+            "responses": [
+                "I am learning this. Please try again later."
+            ]
+        },
+        {
+            "tag": "learned_9",
+            "patterns": [
+                "help"
+            ],
+            "responses": [
+                "I am learning this. Please try again later."
+            ]
+        },
+        {
+            "tag": "learned_10",
+            "patterns": [
+                "yes"
+            ],
+            "responses": [
+                "I am learning this. Please try again later."
+            ]
+        },
+        {
+            "tag": "learned_11",
+            "patterns": [
+                "yes"
+            ],
+            "responses": [
+                "I am learning this. Please try again later."
+            ]
+        }
+    ],
+    "categories": {
+        "programming": {
+            "history": "Programming evolved from the early mechanical looms and analytical engines of the 19th century (Ada Lovelace) to the sophisticated high-level languages of today. It has transitioned from machine-code (binary) to assembly, and finally to modern structured, object-oriented, and functional paradigms that allow humans to solve complex problems at scale.",
+            "description": "Learning generalized programming concepts provides the logical foundation required to master any specific language. It focuses on the universal 'grammar' of computation\u2014logic, memory, and flow\u2014that remains consistent whether you are building a web app or a rocket guidance system.",
+            "Basic": {
+                "topics": [
+                    {
+                        "title": "variables and scope",
+                        "definition": "Variables are named memory locations, and scope defines their visibility.",
+                        "intro": "Learn how to store data and where you can access it in your code.",
+                        "explanation": "Variables are the lifeblood of code. They allow the computer to store and recall information by name.\n\nCONCEPT BREAKDOWN:\n\u2022 Global Scope: Variables declared outside of any block. They are accessible throughout the entire program's lifecycle but can be dangerous if modified accidentally.\n\u2022 Local Scope: Variables declared inside a function or specific logic block. They only 'live' while that block is executing, which saves memory and prevents naming conflicts.\n\u2022 Declaration: Telling the computer the name and type of a variable.\n\u2022 Initialization: Assigning the very first value to a variable.\n\u2022 Constants: 'Locked' variables (like Final in Java or const in JS) that cannot be changed. These are vital for values like PI or API URLs to ensure safety.",
+                        "code_examples": [
+                            "var x = 10; // Global\nfunction f() { let y = 5; } // Local",
+                            "final int MAX = 100; // Constant"
+                        ]
+                    },
+                    {
+                        "title": "arithmetic and operators",
+                        "definition": "Symbols used to perform math and logic on data.",
+                        "intro": "Masters the tools for calculating and comparing values.",
+                        "explanation": "Operators are grouped into: 1. Arithmetic (+, -, *, /, %, **): Basic math plus Modulo (remainder) and Exponentiation. 2. Relational (==, !=, <, >): Comparing values to get booleans. 3. Logical (AND, OR, NOT): Combining multiple conditions. 4. Assignment (=, +=, *=): Storing results. Concepts like 'Operator Precedence' (order of operations) and 'Type Coercion' (how '1' + 2 works) are vital for avoiding bugs.",
+                        "code_examples": [
+                            "res = (10 + 5) * 2; // Precedence\nif (a > 0 && b < 10) { ... }",
+                            "count += 1; // Shorthand"
+                        ]
+                    },
+                    {
+                        "title": "conditional logic",
+                        "definition": "Directing program flow based on boolean evaluations.",
+                        "intro": "How programs make decisions using if-else and switch structures.",
+                        "explanation": "Conditional logic allows a program to make decisions in real-time. It evaluates boolean expressions to decide which path to follow.\n\nCORE CONCEPTS:\n\u2022 If/Else: The primary branching mechanism. 'If' a condition is true, run block A; 'else', run block B.\n\u2022 Else-If: Used for multiple exclusive conditions.\n\u2022 Switch Case: A more efficient way to handle many constant branches (like a menu selection).\n\u2022 Truthy/Falsy: Concepts where non-boolean values (like 0 or empty strings) are treated as false.\n\u2022 Ternary Operator: A compact, one-line version of if-else (condition ? true : false).",
+                        "code_examples": [
+                            "if (age >= 18) { status = 'adult'; } else { status = 'minor'; }",
+                            "let res = (score > 50) ? 'Pass' : 'Fail'; // Ternary"
+                        ]
+                    },
+                    {
+                        "title": "loops and iteration",
+                        "definition": "Repeating code blocks based on conditions or collections.",
+                        "intro": "Automate repetitive tasks using For, While, and Do-While loops.",
+                        "explanation": "Iteration is essential for processing lists. 1. For Loop: Used when the number of repetitions is known. 2. While Loop: Continues until a condition is false (unknown duration). 3. Do-While: Guarantees the code runs at least once. Advanced concepts: 'Break' (exit loop early), 'Continue' (skip to next iteration), and 'Infinite Loops' (logical errors where code never stops).",
+                        "code_examples": [
+                            "for (int i=0; i<5; i++) { print(i); }",
+                            "while (hp > 0) { fight(); if (fled) break; }"
+                        ]
+                    },
+                    {
+                        "title": "data types mastery",
+                        "definition": "The classification of data that tells the compiler how to use it.",
+                        "intro": "Understanding Primitives, Objects, and Type Casting.",
+                        "explanation": "Data has types: 1. Primitives: Simple values like Integers (int), Floats (float), Booleans (bool), and Characters (char). 2. Non-Primitives: Complex objects like Strings and Arrays. Concepts: 1. Static vs Dynamic Typing: Whether the type is fixed (Java) or flexible (Python). 2. Type Casting: Converting 'float' to 'int' (Implicit vs Explicit). 3. Memory Size: How many bits each type consumes.",
+                        "code_examples": [
+                            "int x = (int)3.14; // Explicit casting",
+                            "String name = 'Dev'; // Object type"
+                        ]
+                    }
+                ]
+            },
+            "Intermediate": {
+                "topics": [
+                    {
+                        "title": "functional programming",
+                        "definition": "Building programs by applying and composing functions.",
+                        "intro": "Moving beyond basic subroutines to Pure Functions and Lambdas.",
+                        "explanation": "Functions are reusable logic. 1. Parameters & Arguments: Inputs to functions (Pass-by-value vs Pass-by-reference). 2. Return Values: Outputs from functions. 3. Recursion: Functions calling themselves to solve smaller problems. 4. Anonymous Functions (Lambdas): Quick functions without names. Concepts: Pure Functions (no side effects) and Higher-Order Functions (functions that take/return other functions).",
+                        "code_examples": [
+                            "int factorial(int n) { return n==1 ? 1 : n*factorial(n-1); }",
+                            "list.map(x => x * 2); // Higher-order"
+                        ]
+                    },
+                    {
+                        "title": "arrays and collections",
+                        "definition": "Structures for storing sequences of items.",
+                        "intro": "Indexing, Slicing, and Dynamic Resizing.",
+                        "explanation": "Linear data storage. 1. Static Arrays: Fixed size, fast access by index (O(1)). 2. Dynamic Arrays (Lists): Resizable, easier for changing data. 3. Multi-dimensional Arrays: Matrices/Grids. Methods: .push(), .pop(), .slice(), .map(), .filter(). Concepts: Array Bounds (preventing crashes), Off-by-one errors, and Sequential Search vs Binary Search efficiency.",
+                        "code_examples": [
+                            "int[] scores = {90, 80}; // Static\nscores[0] = 95;",
+                            "let sub = arr.slice(1, 3); // Extracting data"
+                        ]
+                    },
+                    {
+                        "title": "objects and classes",
+                        "definition": "Blueprint-based programming for modeling real-world entities.",
+                        "intro": "Introduction to properties, methods, and instantiation.",
+                        "explanation": "Object-Oriented Programming (OOP) allows developers to model software after real-world objects.\n\nCOMPONENTS:\n\u2022 Class: The blueprint or template. It defines the structure (attributes) and behavior (methods).\n\u2022 Object: An instance of a class. If 'Car' is the class, your 'Silver Tesla' is the object.\n\u2022 Constructor: A special method that initializes a new object when it is created.\n\u2022 Encapsulation: Binding data and methods together and restricting access to some of the object's components (using private/public).\n\u2022 Methods: The 'actions' objects can perform (e.g., car.drive()).",
+                        "code_examples": [
+                            "class Car { Car() { ... } void drive() { ... } }",
+                            "Car myCar = new Car(); myCar.drive();"
+                        ]
+                    },
+                    {
+                        "title": "error and exception handling",
+                        "definition": "A system for managing runtime errors without crashing.",
+                        "intro": "Try-Catch patterns and defensive programming.",
+                        "explanation": "Robust code anticipates failure. 1. Exceptions: Events that disrupt flow (e.g., File Not Found). 2. Try-Catch: Trying risky code and catching errors. 3. Finally Block: Code that runs regardless of error (cleanup). 4. Throwing: Manually triggering an exception. Concepts: Checked vs Unchecked exceptions and custom error types for specific logic failures.",
+                        "code_examples": [
+                            "try { x = 1/0; } catch (e) { print('Error'); } finally { log(); }",
+                            "throw new Exception('Invalid value');"
+                        ]
+                    },
+                    {
+                        "title": "file systems and io",
+                        "definition": "Reading from and writing to external storage.",
+                        "intro": "Persistence: How programs save data to files.",
+                        "explanation": "Input/Output (I/O) handles external data. 1. File Streams: Flows of bytes/text. 2. Buffering: Staging data for faster access. 3. Serialization: Converting objects to bits for storage. Methods: open(), read(), write(), close(), flush(). Concepts: Absolute vs Relative paths and the importance of closing resources to prevent 'Memory Leaks'.",
+                        "code_examples": [
+                            "content = file.read(); // Read operation",
+                            "file.write('Log...'); // Persistence"
+                        ]
+                    }
+                ]
+            },
+            "Advanced": {
+                "topics": [
+                    {
+                        "title": "memory management",
+                        "definition": "The process of tracking and allocating memory units.",
+                        "intro": "The Stack, the Heap, and Garbage Collection.",
+                        "explanation": "Memory management is the process of allocating, using, and freeing memory in a system.\n\nTHE THREE PILLARS:\n\u2022 The Stack: A small, high-speed 'scratchpad' for local variables. It follows LIFO (Last-In-First-Out) and is managed automatically by the compiler.\n\u2022 The Heap: A large pool of memory for objects that need to live a long time. It must be managed carefully.\n\u2022 Garbage Collection (GC): An automatic process (in Java/Python) that finds variables no longer in use and deletes them from the Heap to free up space.\n\u2022 Memory Leaks: Occurs when a program allocates memory but forgets to release it, eventually crashing the system.",
+                        "code_examples": [
+                            "int* p = malloc(sizeof(int)); // Manual allocation",
+                            "delete p; // Manual cleanup"
+                        ]
+                    },
+                    {
+                        "title": "concurrency and threads",
+                        "definition": "Executing multiple sequences of instructions simultaneously.",
+                        "intro": "Parallelism vs Concurrency and Resource Sharing.",
+                        "explanation": "Multitasking in code. 1. Thread: A lightweight sub-process. 2. Synchronous vs Asynchronous: Waiting for results vs moving on. 3. Mutex/Locks: Preventing two threads from changing data at once (Race Conditions). Concepts: Deadlock (threads waiting for each other forever), Thread Pools (optimized reuse), and Atomic operations.",
+                        "code_examples": [
+                            "Thread t1 = new Thread(runnable); t1.start();",
+                            "lock(resource) { update(); } // Synchronized"
+                        ]
+                    },
+                    {
+                        "title": "algorithms and big o",
+                        "definition": "Measuring code efficiency and solving complex problems.",
+                        "intro": "Time Complexity, Space Complexity, and Optimization.",
+                        "explanation": "Algorithm evaluation. 1. Big O Notation: O(1) constant, O(N) linear, O(N^2) quadratic. 2. Sorting: Quicksort, Mergesort, Bubblesort (Efficiency differences). 3. Searching: Binary vs Linear. Concepts: Recursion vs Iteration trade-offs and 'Space-Time' trade-offs (e.g., using more memory to gain speed with caching).",
+                        "code_examples": [
+                            "O(log N): Binary Search on sorted list",
+                            "O(N^2): Simple nested loops"
+                        ]
+                    },
+                    {
+                        "title": "data structures deep dive",
+                        "definition": "Efficient formats for organizing data for specific tasks.",
+                        "intro": "Linked Lists, Stacks, Queues, and Trees.",
+                        "explanation": "Beyond arrays. 1. Linked List: Nodes pointing to next nodes (dynamic growth). 2. Stack: Last-In-First-Out (LIFO) - like a pile of plates. 3. Queue: First-In-First-Out (FIFO) - like a store line. 4. Hash Table: Key-value mapping with O(1) average lookup. Concepts: Pointers, Collision resolution in Hashing, and Tree traversal (BFS vs DFS).",
+                        "code_examples": [
+                            "node.next = newNode; // Linked List",
+                            "stack.push(x); stack.pop(); // LIFO"
+                        ]
+                    },
+                    {
+                        "title": "design patterns",
+                        "definition": "Proven templates for solving recurring design problems.",
+                        "intro": "Singleton, Factory, and Observer patterns.",
+                        "explanation": "Software architecture. 1. Singleton: Ensuring only one instance of a class exists (e.g., Database Connection). 2. Factory: Generating objects without specifying exact types. 3. Observer: Notifying multiple objects of state changes. Concepts: Loose Coupling (making components independent) and Interface-based design for long-term maintainability.",
+                        "code_examples": [
+                            "if (instance == null) instance = new Database();",
+                            "subject.notify(observers);"
+                        ]
+                    }
+                ]
+            }
+        },
+        "python Basic": {
+            "history": "Python was created by Guido van Rossum and first released in 1991. The language was named after the comedy group Monty Python. Guido's design philosophy emphasized code readability, famously summarized in the 'Zen of Python' (PEP 20). It has grown from a humble scripting language into the industry standard for AI, Data Science, and Backend development.",
+            "description": "Python is a high-level, interpreted, general-purpose programming language. Its design philosophy emphasizes code readability with its use of significant indentation. It is dynamically typed and garbage-collected, making it one of the most accessible and powerful languages for beginners and experts alike.",
+            "Basic": {
+                "topics": [
+                    {
+                        "title": "python syntax and indentation",
+                        "definition": "The structural rules and whitespace requirements of Python.",
+                        "intro": "Why Python replaces curly braces with indentation.",
+                        "explanation": "Python's syntax is built for humans. Its most famous rule is the use of white-space for logic.\n\nDETAILED BREAKDOWN:\n\u2022 Indentation: Blocks of code are defined by their indentation level (usually 4 spaces). This replaces the curly braces { } found in C or Java.\n\u2022 Colons: Every new level of logic (if, def, class, for) starts with a colon (:).\n\u2022 Comments: Use # for single lines and triple quotes \"\"\" for large documentation blocks (Docstrings).\n\u2022 PEP 8: The official style guide that ensures all Python code looks consistent.\n\u2022 Dynamic Typing: You don't need to declare that 'x is an integer'; Python figures it out when you assign a value.",
+                        "code_examples": [
+                            "def greet():\n    print('Hello') # Correct indent",
+                            "\"\"\"Multiline docstring\nfor information.\"\"\""
+                        ]
+                    },
+                    {
+                        "title": "list and sequence mastery",
+                        "definition": "Python lists and their exhaustive collection methods.",
+                        "intro": "Using Lists, Append, Pop, and Slicing.",
+                        "explanation": "Lists are mutable sequences. Methods: 1. .append(x): Add to end. 2. .insert(i, x): Shift items. 3. .pop(i): Remove and return. 4. .remove(x): Find and delete. 5. .sort(): Efficient Timsort implementation. 6. .extend(l): Merge lists. Concepts: Negative Indexing (arr[-1]), Slicing (arr[1:4:2]), and the 'Copying' problem (shallow vs deep copy using copy module).",
+                        "code_examples": [
+                            "L = [1, 2, 3]; L.append(4); print(L[1:3])",
+                            "L2 = L.copy() # Avoid reference sharing"
+                        ]
+                    },
+                    {
+                        "title": "dictionaries and mapping",
+                        "definition": "Highly optimized key-value pairs (hash maps).",
+                        "intro": "Fast lookups and dictionary methods.",
+                        "explanation": "Dicts are heart of Python. Methods: 1. .get(k, default): Avoid KeyErrors. 2. .update(d2): Merge data. 3. .items(): Iterate keys and values. 4. .keys() / .values(): Collection views. Concepts: Dictionary Comprehensions, Hashable keys (only immutable types can be keys), and Case-sensitivity in key matching.",
+                        "code_examples": [
+                            "D = {'a': 1, 'b': 2}; val = D.get('c', 0)",
+                            "D2 = {x: x**2 for x in range(5)} # Comprehension"
+                        ]
+                    },
+                    {
+                        "title": "tuples and sets",
+                        "definition": "Immutable sequences and unique collections.",
+                        "intro": "Data safety with tuples and math with sets.",
+                        "explanation": "Specialized collections. 1. Tuple: Immutable (fixed) list (x, y). Methods: .count(), .index(). 2. Set: Unordered, unique items. Methods: .add(), .union() (|), .intersection() (&), .difference() (-). Concepts: Discarding duplicates, Hashing for fast set membership check (O(1)), and Tuple Unpacking for functions returning multiple values.",
+                        "code_examples": [
+                            "point = (10, 20); x, y = point # Unpacking",
+                            "S = {1, 2, 2, 3}; # S is {1, 2, 3}"
+                        ]
+                    },
+                    {
+                        "title": "string processing",
+                        "definition": "Advanced text manipulation in Python.",
+                        "intro": "Splitting, Joining, and Formatting strings.",
+                        "explanation": "Strings are immutable. Methods: 1. .strip(): Clean whitespace. 2. .split(','): Parse CSV. 3. .join(list): Efficient merging. 4. .replace(): Swap text. 5. .lower() / .upper(): Standardizing. Concepts: f-strings (f'Hello {var}') for fast interpolation, string pools (interning), and raw strings (r'C:\\\\path') for regular expressions.",
+                        "code_examples": [
+                            "text = '  data  '.strip().upper()",
+                            "path = r'C:\\\\users\\\\temp' # Raw string"
+                        ]
+                    }
+                ]
+            },
+            "Intermediate": {
+                "topics": [
+                    {
+                        "title": "list comprehensions and generators",
+                        "definition": "Syntactic sugar for efficient iteration.",
+                        "intro": "Replacing loops with concise one-liners.",
+                        "explanation": "Intermediate efficiency. 1. List Comprehensions: [expr for x in list if cond]. 2. Generator Expressions: (expr for x in list) - yields items one by one (Memory efficient). 3. Zip and Enumerate: Parallel iteration and indexing.",
+                        "code_examples": [
+                            "squares = [x**2 for x in range(5)]",
+                            "gen = (x**2 for x in range(5))"
+                        ]
+                    },
+                    {
+                        "title": "functions and args/kwargs",
+                        "definition": "Flexible function definitions in Python.",
+                        "intro": "Mastering variable arguments and default parameters.",
+                        "explanation": "Dynamic inputs. 1. *args: Collects extra positional arguments into a tuple. 2. **kwargs: Collects extra named arguments into a dict. 3. Default Arguments: Setting values for missing inputs. Concepts: Scope (Global vs Local keywords), 'Unpacking' arguments using * and **, and the danger of mutable default arguments ([] as default).",
+                        "code_examples": [
+                            "def func(*args): print(args[0])",
+                            "def call(name='Guest'): print(name)"
+                        ]
+                    },
+                    {
+                        "title": "pythonic oop",
+                        "definition": "Object-oriented programming using Python classes.",
+                        "intro": "Methods, Self, and Property decorators.",
+                        "explanation": "Python's version of OOP is flexible, dynamic, and powerful, favoring 'Duck Typing'.\n\nPROPERTIES:\n\u2022 Self: Every instance method must take 'self' as its first parameter to refer to the object itself.\n\u2022 Dunder Methods: Magic methods like __init__ (constructor) or __str__ (string conversion) that use double underscores.\n\u2022 Duck Typing: 'If it walks like a duck and quacks like a duck, it's a duck.' Python cares about what an object can DO, not what class it inherits from.\n\u2022 Decorators (@): Syntax to modify the behavior of class methods, like @property for getters.",
+                        "code_examples": [
+                            "class Dog:\n    def __init__(self, name): self.name = name\n    @property\n    def upper_name(self): return self.name.upper()"
+                        ]
+                    },
+                    {
+                        "title": "modules and packages",
+                        "definition": "Organizing code into reusable files and directories.",
+                        "intro": "Importing logic and managing namespaces.",
+                        "explanation": "Scaling Python. 1. import: Loading modules. 2. from x import y: Selective imports. 3. __init__.py: Making a directory a 'package'. 4. sys.path: Where Python looks for code. Concepts: Avoiding circular imports, virtual environments (venv), and the Python Standard Library (math, os, json).",
+                        "code_examples": [
+                            "import math; print(math.sqrt(16))",
+                            "from os import path"
+                        ]
+                    },
+                    {
+                        "title": "file handling and context managers",
+                        "definition": "Safe resource management using Python's with-statement.",
+                        "intro": "Reading/Writing and the 'With' keyword.",
+                        "explanation": "Resource Safety. 1. open(mode): Modes 'r' (read), 'w' (write), 'a' (append), 'b' (binary). 2. Context Manager: Using 'with' ensures files close automatically even if errors occur. 3. JSON handling: json.loads() and json.dumps(). Concepts: Buffer flushing, encoding (utf-8), and handling file-not-found errors gracefully.",
+                        "code_examples": [
+                            "with open('test.txt', 'w') as f: f.write('Hello')",
+                            "import json; data = json.load(f) # Read JSON"
+                        ]
+                    }
+                ]
+            },
+            "Advanced": {
+                "topics": [
+                    {
+                        "title": "decorators and closures",
+                        "definition": "Functions that wrap other functions to modify behavior.",
+                        "intro": "Mastering @syntax and higher-order logic.",
+                        "explanation": "Metaprogramming basics. 1. Closure: A function that 'remembers' variables from its outer scope. 2. Decorator: A function that takes a function and returns a new function. 3. Wraps: Using functools.wraps to preserve metadata. Concepts: Generic wrappers (using *args, **kwargs) and layering multiple decorators on one function.",
+                        "code_examples": [
+                            "def log(f):\n    def w(*a, **k): print('Run'); return f(*a, **k)\n    return w",
+                            "@log\ndef test(): pass"
+                        ]
+                    },
+                    {
+                        "title": "asyncio and concurrency",
+                        "definition": "Asynchronous programming using await and event loops.",
+                        "intro": "Handling thousands of network connections efficiently.",
+                        "explanation": "Asyncio is Python's way of handling tasks tasks that spend most of their time waiting for data (I/O).\n\nKEY CONCEPTS:\n\u2022 Event Loop: The manager that watches all 'async' tasks and runs them when they are ready.\n\u2022 Coroutines: Functions defined with 'async def' that can be paused (using await).\n\u2022 Awaitable: An object that can be used with the 'await' keyword to yield control back to the event loop.\n\u2022 Non-blocking: Instead of waiting for a file download to finish, the program moves on to other tasks, making it much more efficient for network-heavy apps.",
+                        "code_examples": [
+                            "async def main():\n    results = await asyncio.gather(get(url1), get(url2))"
+                        ]
+                    },
+                    {
+                        "title": "dunder methods and protocols",
+                        "definition": "Magic methods starting and ending with double underscores.",
+                        "intro": "Customizing iteration, math, and object behavior.",
+                        "explanation": "Python's internal hooks. 1. __init__: Constructor. 2. __str__ / __repr__: Text representation. 3. __len__: len() support. 4. __getitem__: Indexing support. 5. __call__: Making objects callable as functions. Concepts: The 'Python Data Model' and creating custom containers that behave like built-in lists/dicts.",
+                        "code_examples": [
+                            "class List:\n    def __len__(self): return 10\n    def __getitem__(self, i): return i"
+                        ]
+                    },
+                    {
+                        "title": "metaclasses and introspection",
+                        "definition": "The 'class of a class' and exploring objects at runtime.",
+                        "intro": "Dynamic class creation and object inspection.",
+                        "explanation": "Extreme advanced logic. 1. type(): The base metaclass. 2. __new__ vs __init__ in class creation. 3. getattr() / setattr(): Dynamic attribute access. 4. inspect module: Looking inside functions. Concepts: Automatically registering classes, validating attributes at creation, and the 'Single Responsibility Principle' in metaprogramming.",
+                        "code_examples": [
+                            "class Meta(type): pass\nclass MyClass(metaclass=Meta): pass",
+                            "if hasattr(obj, 'run'): obj.run()"
+                        ]
+                    },
+                    {
+                        "title": "multiprocessing and the gil",
+                        "definition": "Bypassing the Global Interpreter Lock for true parallelism.",
+                        "intro": "CPU-bound tasks and Inter-process Communication.",
+                        "explanation": "Performance scaling. 1. The GIL: Mutex that prevents multiple threads from running bytecode at once. 2. Multiprocessing: Spawning separate OS processes. 3. Queue / Pipe: Communicating between processes. 4. Shared Memory: Sharing data (carefully). Concepts: Overhead of process creation vs thread creation and choosing the right concurrency model.",
+                        "code_examples": [
+                            "from multiprocessing import Process\np = Process(target=worker); p.start()"
+                        ]
+                    }
+                ]
+            }
+        },
+        "java Basic": {
+            "history": "Java was developed by James Gosling at Sun Microsystems and released in 1995. Originally intended for interactive television, it found its true calling in enterprise server-side development and later as the primary language for Android apps. It was acquired by Oracle Corporation in 2010.",
+            "description": "Java is a class-based, object-oriented programming language designed to have as few implementation dependencies as possible. Its defining characteristic is 'Write Once, Run Anywhere' (WORA), achieved by compiling code into bytecode that runs on the Java Virtual Machine (JVM). It remains a cornerstone of enterprise infrastructure.",
+            "Basic": {
+                "topics": [
+                    {
+                        "title": "java class and main",
+                        "definition": "The essential structure of any Java application.",
+                        "intro": "Everything starts with a class and a public static void main.",
+                        "explanation": "Java is strictly class-based. 1. Bytecode: Java compiles to .class files (W.O.R.A - Write Once Run Anywhere). 2. Package: Namespace for folders. 3. main method: Entry point. 4. System.out: Standard output stream. Concepts: Classloader basics, the difference between source (.java) and compiled (.class), and basic syntax rules (semicolons, braces).",
+                        "code_examples": [
+                            "public class App {\n  public static void main(String[] args) {\n    System.out.println(\"Hi\");\n  }\n}"
+                        ]
+                    },
+                    {
+                        "title": "java primitives and wrappers",
+                        "definition": "Data storage in Java using primitive types and their object counterparts.",
+                        "intro": "Int, Double, Boolean and Autoboxing.",
+                        "explanation": "Java has a strict separation between low-level data and high-level object wrappers.\n\nCONCEPTS TO MASTER:\n\u2022 Primitives: Eight basic types (int, boolean, char, etc.). They are stored on the 'Stack', making them extremely fast but they lack methods.\n\u2022 Wrapper Classes: Objects like Integer and Boolean that wrap primitives. Used when objects are required (like in Collections).\n\u2022 Autoboxing: The compiler automatically converts primitives to wrappers and vice versa (e.g., passing 5 into a method needing an Integer).\n\u2022 Nullability: Primitives can never be null (int is always at least 0), whereas Wrappers can be null, leading to potential NullPointerExceptions.",
+                        "code_examples": [
+                            "int x = 10; Integer y = x; // Autoboxing\nint val = Integer.parseInt(\"100\");"
+                        ]
+                    },
+                    {
+                        "title": "string and stringbuilder",
+                        "definition": "Handling text and sequences of characters efficiently in Java.",
+                        "intro": "Immutability vs Mutability in text processing.",
+                        "explanation": "Java's text handling. 1. String: Immutable (cannot be changed). Every change creates a new object in the 'String Pool'. 2. StringBuilder: Mutable (can be changed). Efficient for building text in loops. 3. Methods: .equals(), .length(), .substring(), .charAt(), .append(). Concepts: The String Pool (saving memory by reusing strings) and why we never use == to compare strings in Java.",
+                        "code_examples": [
+                            "String s = \"Java\"; if(s.equals(\"Java\")) { ... }",
+                            "StringBuilder sb = new StringBuilder(); sb.append(\"1\");"
+                        ]
+                    },
+                    {
+                        "title": "control statements and ternary",
+                        "definition": "Java's logic gates and decision-making syntax.",
+                        "intro": "If, Else, Switch and Ternary operators.",
+                        "explanation": "Flow of control. 1. If-Else: Standard logic. 2. Switch: Works with byte, short, char, int, Enums, and Strings. 3. Ternary: (cond) ? trueVal : falseVal. 4. Logic: && (and), || (or), ! (not). Concepts: Logical short-circuiting (checking first condition before second), Break statements in switch (preventing fall-through), and 'Default' cases as fallbacks.",
+                        "code_examples": [
+                            "switch(day) { case 1: break; default: break; }",
+                            "int result = (x > y) ? x : y;"
+                        ]
+                    },
+                    {
+                        "title": "arrays and simple loops",
+                        "definition": "Fixed-size indexing structures and iteration patterns.",
+                        "intro": "Arrays and the three types of loops in Java.",
+                        "explanation": "Basic collections. 1. Array: Fixed size upon creation. scores = new int[5]. 2. Loops: Standard 'For' (index-based), 'While' (condition-based), and 'For-Each' (collection-based). Methods: Array.length (attribute, not method). Concepts: ArrayIndexOutOfBoundsException, Zero-based indexing, and deep copying arrays with System.arraycopy().",
+                        "code_examples": [
+                            "int[] arr = {1, 2, 3};\nfor(int i : arr) { System.out.println(i); }"
+                        ]
+                    }
+                ]
+            },
+            "Intermediate": {
+                "topics": [
+                    {
+                        "title": "oop principles mastery",
+                        "definition": "The four pillars of Object-Oriented Programming in Java.",
+                        "intro": "Encapsulation, Inheritance, Polymorphism, and Abstraction.",
+                        "explanation": "Java was built from the ground up to be an object-oriented language. It relies on four main pillars.\n\nTHE FOUR PILLARS:\n\u2022 Encapsulation: Keeping data (fields) private and providing access only via public methods (Getters/Setters) to protect internal state.\n\u2022 Inheritance: Allowing one class to inherit the attributes and methods of another (using 'extends'). This promotes code reuse.\n\u2022 Polymorphism: 'Many forms.' A child class can override a parent's method to provide its own specific behavior (@Override).\n\u2022 Abstraction: Hiding implementation details and only showing essential features to the user (using Abstract classes and Interfaces).",
+                        "code_examples": [
+                            "class Dog extends Animal { @Override void sound() { ... } }",
+                            "private String name; public void setName(String n) { ... }"
+                        ]
+                    },
+                    {
+                        "title": "interfaces and default methods",
+                        "definition": "Defining contracts and adding functionality to interfaces.",
+                        "intro": "Total abstraction vs reusable default methods.",
+                        "explanation": "The evolution of Interfaces. 1. Traditional Interface: Only public abstract methods. 2. Default Methods (Java 8): Adding code to interfaces without breaking implementing classes. 3. Static Methods: Helper code in interfaces. 4. Private Methods (Java 9): Internal reuse within interface. Concepts: Multiple implementation (a class can implement many interfaces) and the 'Diamond Problem' in default methods.",
+                        "code_examples": [
+                            "interface Flyable { default void land() { print(\"ok\"); } }",
+                            "class Plane implements Flyable, Movable { ... }"
+                        ]
+                    },
+                    {
+                        "title": "collections and arraylist mastery",
+                        "definition": "Java's dynamic collection framework for objects.",
+                        "intro": "A deep dive into lists, sets, queues, and maps.",
+                        "explanation": "The Java Collections Framework is a unified architecture for representing and manipulating collections.\\n\\nCORE COLLECTIONS:\\n\u2022 ArrayList: Dynamic resizable array. Best for fast random access (O(1)).\\n\u2022 LinkedList: Doubly-linked list. Efficient for element insertion and removal at any position but slower access.\\n\u2022 Vector: Legacy synchronized (thread-safe) version of ArrayList.\\n\u2022 Stack: LIFO (Last-In-First-Out) implementation, extends Vector.\\n\u2022 PriorityQueue: Stores elements based on their natural ordering or a custom comparator.\\n\u2022 Deque (ArrayDeque): Double-ended queue used as a faster alternative to Stack and LinkedList for queue operations.\\n\u2022 HashMap & HashSet: Key-value and unique-item storage using hashing techniques.",
+                        "code_examples": [
+                            "LinkedList<String> link = new LinkedList<>();\\nlink.addFirst(\"Element\");",
+                            "Vector<Integer> v = new Vector<>(); // Thread-safe",
+                            "Stack<String> s = new Stack<>(); s.push(\"Top\");",
+                            "PriorityQueue<Double> pq = new PriorityQueue<>();",
+                            "Deque<String> ad = new ArrayDeque<>(); ad.pollFirst();"
+                        ]
+                    },
+                    {
+                        "title": "exception handling depth",
+                        "definition": "Managing program failures using Try-Catch-Finally and Throws.",
+                        "intro": "Checked vs Unchecked Exceptions and global error handling.",
+                        "explanation": "Java's error system. 1. Checked Exceptions: Compiler forces you to handle them (e.g., IOException). 2. Unchecked Exceptions: Runtime errors (e.g., NullPointerException). 3. Try-Catch-Finally: The safety net. 4. Throw vs Throws: Triggering vs Declaring potential errors. Concepts: Resource management with 'Try-with-resources' (automatic closing) and creating custom Exception subclasses.",
+                        "code_examples": [
+                            "try (FileReader fr = new FileReader(\"a\")) { ... } // Auto-close",
+                            "throw new MyException(\"Logic error\");"
+                        ]
+                    },
+                    {
+                        "title": "generics and type safety",
+                        "definition": "Writing flexible, reusable code that works with different types.",
+                        "intro": "Using angle brackets to prevent casting errors.",
+                        "explanation": "Java 5 generics. 1. Generic Class: class Box<T>. 2. Generic Method: <V> void show(V v). 3. Wildcards: List<? extends Animal> vs List<? super Dog>. Concepts: Type Erasure (Generic types are removed by the compiler at runtime for backward compatibility) and the inability to use primitives with generics (must use wrappers).",
+                        "code_examples": [
+                            "public class Box<T> { private T obj; }",
+                            "List<String> list = new ArrayList<>(); // Type safe"
+                        ]
+                    }
+                ]
+            },
+            "Advanced": {
+                "topics": [
+                    {
+                        "title": "streams and lambda expressions",
+                        "definition": "Processing sequences of elements in a functional style.",
+                        "intro": "Filter, Map, and Reduce in modern Java 8+.",
+                        "explanation": "Streams represent a sequence of objects from a source, which supports aggregate operations.\n\nSTREAM PIPELINE:\n\u2022 Source: A collection (like a List), an array, or an I/O channel.\n\u2022 Intermediate Operations: Methods like .filter(), .map(), or .sorted() that transform the stream into another stream. They are 'Lazy' (don't run immediately).\n\u2022 Terminal Operations: Methods like .collect(), .forEach(), or .reduce() that produce a result or side-effect and close the stream.\n\u2022 Lambdas (->): The functional syntax used to define logic concisely within these stream operations.",
+                        "code_examples": [
+                            "list.stream().filter(s -> s.length() > 3).map(String::toUpperCase).collect(toList());",
+                            "Optional<String> name = Optional.ofNullable(null);"
+                        ]
+                    },
+                    {
+                        "title": "multithreading and synchronization",
+                        "definition": "Managing concurrent execution and shared state.",
+                        "intro": "Threads, Runnables, and the Synchronized keyword.",
+                        "explanation": "Parallel Java. 1. Thread class: Base threading. 2. Runnable Interface: Preferred for task definition. 3. Synchronized keyword: Locking objects to prevent data corruption. 4. Wait/Notify: Inter-thread communication. Concepts: Race Conditions, Deadlocks (circular waiting), and the Volatile keyword (ensuring visibility of changes between threads).",
+                        "code_examples": [
+                            "synchronized(obj) { counter++; }",
+                            "new Thread(() -> System.out.println(\"Hi\")).start();"
+                        ]
+                    },
+                    {
+                        "title": "jvm internals and memory",
+                        "definition": "High-level understanding of Java's runtime execution engine.",
+                        "intro": "ClassLoader, JIT Compiler, and Garbage Collection tuning.",
+                        "explanation": "Behind the scenes. 1. Heap: Where objects live. 2. Stack: Where method calls and local variables live. 3. Metaspace: Where class metadata lives. 4. G1 Garbage Collector: Modern cleanup strategy. 5. JIT (Just-In-Time): Compiles hot code to machine native during runtime. Concepts: Memory Leaks (static references preventing GC), Heap Overflows, and profiler tools (VisualVM).",
+                        "code_examples": [
+                            "System.gc(); // Suggestion to GC",
+                            "Runtime.getRuntime().freeMemory();"
+                        ]
+                    },
+                    {
+                        "title": "reflection and annotations",
+                        "definition": "Inspecting and modifying code behavior at runtime.",
+                        "intro": "Looking inside classes and processing metadata.",
+                        "explanation": "Metaprogramming Java. 1. Class.forName(): Loading classes by name. 2. getMethods() / getFields(): Finding members. 3. setAccessible(true): Bypassing private modifiers. 4. Custom Annotations: @interface for metadata. Concepts: Use cases for reflection (Frameworks like Hibernate/Spring), and the performance overhead of using reflection vs standard calls.",
+                        "code_examples": [
+                            "Method m = obj.getClass().getDeclaredMethod(\"run\");",
+                            "@MyAnnotation void test() { ... }"
+                        ]
+                    },
+                    {
+                        "title": "nio and network io",
+                        "definition": "Modern Non-blocking Input/Output and Socket programming.",
+                        "intro": "Channels, Buffers, and TCP/UDP connections.",
+                        "explanation": "Scalable I/O. 1. Channels (NIO): Faster than streams for bulk data. 2. Buffers: Objects that hold data for moving. 3. Selectors: One thread managing multiple channels. 4. URL/Socket classes: Basic networking. Concepts: Synchronous vs Asynchronous I/O and handling byte-level data in network protocols.",
+                        "code_examples": [
+                            "Socket socket = new Socket(\"localhost\", 80);",
+                            "FileChannel channel = FileChannel.open(path);"
+                        ]
+                    }
+                ]
+            }
+        },
+        "c": {
+            "history": "C was developed by Dennis Ritchie between 1969 and 1973 at Bell Labs. It was created to rewrite the Unix operating system, which was previously written in assembly. C's success sparked a revolution, leading to the development of C++, Objective-C, and influencing almost every modern language in existence.",
+            "description": "C is a general-purpose, procedural computer programming language. It provides low-level access to memory and a simple set of keywords, making it ideal for system-level programming like operating systems and device drivers. Despite its age, C remains the 'lingua franca' of computer science due to its efficiency and proximity to the hardware.",
+            "Basic": {
+                "topics": [
+                    {
+                        "title": "c syntax and stdio",
+                        "definition": "The foundation of C programming and standard IO.",
+                        "intro": "Learning #include, main, and basic C structure.",
+                        "explanation": "C is a procedural language. 1. Preprocessor (#include, #define): Command to compiler before building. 2. main function: Always returns int (status code). 3. printf / scanf: Output and Input. Methods: These use Format Specifiers like %d (int), %f (float), %s (string). Concepts: Case-sensitivity, semicolons as terminators, and the difference between Source-Code and Object-Code after compilation.",
+                        "code_examples": [
+                            "printf(\"Val: %d\\\\n\", 10);",
+                            "scanf(\"%d\", &var); // Address needed"
+                        ]
+                    },
+                    {
+                        "title": "c variables and types",
+                        "definition": "Strict data typing and memory allocation for primitives.",
+                        "intro": "Ints, Floats, Chars, and fixed-size arrays.",
+                        "explanation": "C is a statically typed language, meaning every variable must have a type declared at compile time.\n\nTYPES IN C:\n\u2022 Int: Integer numbers (usually 4 bytes on 32/64 bit systems).\n\u2022 Float/Double: Floating-point numbers for decimal precision.\n\u2022 Char: A single character (1 byte). Characters in C are actually integers (ASCII values).\n\u2022 Qualifiers: Keywords like 'unsigned' (only positive numbers) or 'long' (larger range) modify how the basic types behave.\n\u2022 Casting: Converting one type to another\u2014crucial for low-level math (e.g., (float)x / y).",
+                        "code_examples": [
+                            "unsigned int x = 300;\nchar name[5] = \"Dev\"; // Actually 6 space for \\\\0"
+                        ]
+                    },
+                    {
+                        "title": "operators and logic",
+                        "definition": "Mathematical and logical tools in C.",
+                        "intro": "Mastering arithmetic, compound assignment, and bitwise basics.",
+                        "explanation": "Calculations. 1. Arithmetic: +, -, *, /, % (modulo). 2. Compound: +=, -=, *= (Efficiency). 3. Increments: i++ (Post) vs ++i (Pre). 4. Logic: && (AND), || (OR), ! (NOT). 5. Bitwise (Intro): & (AND), | (OR), << (Shift). Concepts: Truth values in C (0 is False, ANY other number is True) and operator precedence (math rules).",
+                        "code_examples": [
+                            "if (x != 0 && y > 10) { ... }",
+                            "int y = x << 1; // Multiply by 2"
+                        ]
+                    },
+                    {
+                        "title": "c control flow",
+                        "definition": "If-else, Switch, and Loop primitives in C.",
+                        "intro": "Decision building blocks of high-performance code.",
+                        "explanation": "Branching. 1. If-Else: Primary logic. 2. Switch Case: Constant-based branching (must use break!). 3. Loops: for, while, do-while. 4. Control Keywords: break (exit), continue (skip), goto (discouraged jump). Concepts: Fall-through in Switch (useful but dangerous) and using infinite while(1) loops in resource controllers.",
+                        "code_examples": [
+                            "for(int i=0; i<10; i++) { ... }",
+                            "switch(c) { case 'a': break; }"
+                        ]
+                    },
+                    {
+                        "title": "functions and prototypes",
+                        "definition": "Modular logic blocks and declaration rules in C.",
+                        "intro": "Building reusable functions and header files.",
+                        "explanation": "Procedures. 1. Prototypes: Declaring function signature at the top so main knows it exists. 2. Return Type: Data type given back. 3. Parameters: Inputs (passed by value by default). 4. Header Files (.h): Storing declarations for multi-file projects. Concepts: Memory stack for function calls, local vs global variables, and the 'Scope' of variables inside curves.",
+                        "code_examples": [
+                            "int add(int a, int b); // Prototype\nint add(int a, int b) { return a+b; }"
+                        ]
+                    }
+                ]
+            },
+            "Intermediate": {
+                "topics": [
+                    {
+                        "title": "pointers deep dive",
+                        "definition": "Managing memory directly using addresses.",
+                        "intro": "The most powerful and dangerous tool in C.",
+                        "explanation": "Pointers are the bridge between your code and the physical hardware memory. They store addresses, not values.\n\nTECHNICAL GUIDE:\n\u2022 Address-of (&): This operator finds where a variable lives in RAM.\n\u2022 Dereference (*): This operator allows you to 'go to' that address and read or change the value.\n\u2022 Pass-by-Reference: Allowing a function to modify a variable from the caller's scope by passing its address.\n\u2022 Pointer Arithmetic: Adding 1 to a pointer moves it to the next item based on its data type size.\n\u2022 Safety: Pointers are dangerous; uninitialized pointers can cause 'Segmentation Faults' (crashes).",
+                        "code_examples": [
+                            "int x = 10; int *p = &x; *p = 20; // x is now 20",
+                            "void swap(int *a, int *b) { ... }"
+                        ]
+                    },
+                    {
+                        "title": "c strings and math.h",
+                        "definition": "String library (string.h) and math utilities.",
+                        "intro": "Working with text arrays and complex math.",
+                        "explanation": "Library support. 1. string.h: Methods: strlen() (length), strcpy() (copy), strcmp() (compare), strcat() (join). 2. math.h: Methods: sqrt() (square root), pow() (power), ceil(), floor(), sin(), cos(). Concepts: Why we use strcmp instead of == for C strings, character array offsets, and the '\\0' null terminator requirement.",
+                        "code_examples": [
+                            "if (strcmp(s1, s2) == 0) { ... }",
+                            "double res = sqrt(16.0);"
+                        ]
+                    },
+                    {
+                        "title": "dynamic memory allocation",
+                        "definition": "Requesting memory at runtime from the system heap.",
+                        "intro": "Malloc, Calloc, Realloc, and Free.",
+                        "explanation": "Manual memory. 1. malloc(size): Allocate uninitialized memory. 2. calloc(n, size): Allocate zeroed memory. 3. realloc(ptr, newSize): Resize memory block. 4. free(ptr): Crucial! Give memory back to OS. Concepts: Heap vs Stack memory, the danger of Memory Leaks (forgetting free), and Double-Free errors.",
+                        "code_examples": [
+                            "int *arr = (int*)malloc(10 * sizeof(int));\nfree(arr);"
+                        ]
+                    },
+                    {
+                        "title": "structures and unions",
+                        "definition": "Custom multi-type data objects in C.",
+                        "intro": "Grouping data into Structs and sharing memory in Unions.",
+                        "explanation": "User-defined data. 1. Structure (struct): Grouping different types (e.g., Student name+age). Use '.' for values and '->' for pointer access. 2. Union: Members share SAME memory (saves space). 3. Typedef: Creating aliases for types (e.g., typedef unsigned long ulong). Concepts: Memory padding in structs, size differences between struct vs union, and nested structs.",
+                        "code_examples": [
+                            "struct User { char n[20]; int age; };",
+                            "struct User *u = &realUser; u->age = 20;"
+                        ]
+                    },
+                    {
+                        "title": "file io operations",
+                        "definition": "Standard library (stdio.h) patterns for file interaction.",
+                        "intro": "Fopen, Fread, Fwrite and Fclose.",
+                        "explanation": "External data. 1. FILE pointer: Object representing file info. 2. fopen(path, mode): Open file. Modes: 'r' (read), 'w' (overwrite), 'a' (append). 3. fprintf / fscanf: Formatted read/write. 4. fgetc / fputc: Char-level interaction. Concepts: Buffer streams, error checking (checking if file* is NULL), and importance of flushing/closing files.",
+                        "code_examples": [
+                            "FILE *f = fopen(\"t.txt\", \"r\");",
+                            "fprintf(f, \"Data: %d\", 10); fclose(f);"
+                        ]
+                    }
+                ]
+            },
+            "Advanced": {
+                "topics": [
+                    {
+                        "title": "function pointers and callbacks",
+                        "definition": "Storing function addresses in variables for dynamic calling.",
+                        "intro": "Passing functions as arguments to other functions.",
+                        "explanation": "Extreme modularity. 1. Declaration: void (*ptr)(int). 2. Assignment: ptr = &myFunc. 3. Call: (*ptr)(5). 4. Use-case: Callback functions for sorting (passing comparison logic) or event handlers. Concepts: Function Table (Dispatch Table) design and the difference between function address and standard pointer address.",
+                        "code_examples": [
+                            "void (*greet)() = &hello;\ngreet(); // Dynamic call"
+                        ]
+                    },
+                    {
+                        "title": "bitwise operations mastery",
+                        "definition": "Manipulating data at the individual bit level.",
+                        "intro": "AND, OR, XOR, NOT, and Bit-Shifting.",
+                        "explanation": "Hardware level logic. 1. & (AND): Masking bits. 2. | (OR): Setting bits. 3. ^ (XOR): Toggling bits. 4. ~ (NOT): Inverting. 5. << / >>: Shifting left (multiply by 2) or right (divide by 2). Concepts: Bit-flags (storing many booleans in one int), Bit-fields in structs, and performance optimization for math.",
+                        "code_examples": [
+                            "int flags = 0x01 | 0x04; // Set bits 1 and 3",
+                            "if (flags & 0x01) { ... } // Check bit 1"
+                        ]
+                    },
+                    {
+                        "title": "the preprocessor and macros",
+                        "definition": "Advanced compile-time text replacement and inclusion rules.",
+                        "intro": "Conditional compilation and function-like macros.",
+                        "explanation": "Early build phase. 1. #define: Constants and Macros. 2. Conditional Compile: #ifdef, #ifndef, #if (used for cross-platform support). 3. Header Guards: Preventing repeat inclusion errors. Concepts: Side effects in macros, stringification (#), and token pasting (##).",
+                        "code_examples": [
+                            "#define SQUARE(x) ((x)*(x))",
+                            "#ifndef HEADER_H\n#define HEADER_H\n..."
+                        ]
+                    },
+                    {
+                        "title": "c systems memory layout",
+                        "definition": "The layout of a C program in physical RAM.",
+                        "intro": "Text, Data, BSS, Heap, and Stack segments.",
+                        "explanation": "Understanding how a C program is represented in memory (RAM) is vital for debugging and security.\n\nMEMORY SEGMENTS:\n\u2022 Text Segment: Contains the actual machine code (read-only).\n\u2022 Data Segment: Stores initialized global and static variables.\n\u2022 BSS Segment: Stores uninitialized global and static variables (zero-initialized).\n\u2022 Stack: Stores local variables and function call frames. It grows 'downwards'.\n\u2022 Heap: Managed via malloc/free for dynamic allocation. It grows 'upwards' towards the stack.",
+                        "code_examples": [
+                            "static int x = 10; // Data segment",
+                            "void f() { int y; } // Stack segment"
+                        ]
+                    },
+                    {
+                        "title": "advanced algorithms in c",
+                        "definition": "Implementing data structures and logic from scratch.",
+                        "intro": "Linked Lists, Binary Trees, and Hash Tables in C.",
+                        "explanation": "Manual DS implementation. 1. Linked List: Statically defined structs with next pointers. 2. Binary Tree: Structs with left/right pointers. 3. Sorting Algorithms: qsort logic. Concepts: Handling pointer relationships carefully during node deletion, recursively traversing trees, and managing the memory of every newly created node manually using malloc/free.",
+                        "code_examples": [
+                            "struct Node { int d; struct Node *n; };",
+                            "root->left = createNode(10);"
+                        ]
+                    }
+                ]
+            }
+        }
+    }
+}
