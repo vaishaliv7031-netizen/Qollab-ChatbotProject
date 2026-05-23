@@ -497,7 +497,9 @@
         });
 
         async function deleteThread(name) {
-            if (!confirm(`Delete session thread [${name}] permanently?`)) return;
+            if (!confirm(`Delete session thread [${name}] permanently?`)) 
+            
+                return:
             
             try {
                 const res = await fetch('/delete-chat', {
