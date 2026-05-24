@@ -17,12 +17,15 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.pipeline import make_pipeline
 
 # Ensure necessary NLTK components are locally available
-for dependency in ['tokenizers/punkt', 'corpora/stopwords', 'corpora/wordnet']:
+# Ensure necessary NLTK components are locally available
+# Added 'corpora/punkt_tab' to fix the Render tokenization crash
+for dependency in ['tokenizers/punkt', 'corpora/stopwords', 'corpora/wordnet', 'corpora/punkt_tab']:
     try:
         nltk.data.find(dependency)
     except LookupError:
-        nltk.download(dependency.split('/')[-1])
-
+        # Handle naming variation translation for the download utility
+        download_target = dependency.split('/')[-1]
+        nltk.download(download_target)
 # ------------------ ENVIRONMENT SETUP ------------------
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CHATBOT = Flask(__name__, static_folder="static")
