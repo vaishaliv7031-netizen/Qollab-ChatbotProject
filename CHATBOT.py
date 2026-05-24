@@ -17,6 +17,7 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.pipeline import make_pipeline
 
 # Ensure necessary NLTK components are locally available
+
 # Ensure necessary NLTK components are locally available
 # Added 'corpora/punkt_tab' to fix the Render tokenization crash
 for dependency in ['tokenizers/punkt', 'corpora/stopwords', 'corpora/wordnet', 'corpora/punkt_tab']:
@@ -31,8 +32,8 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CHATBOT = Flask(__name__, static_folder="static")
 CHATBOT.secret_key = "scikit-nb-adaptive-nlp-key"
 
-DATA_FILE_PATH = os.path.join(BASE_DIR, "DATA.json")
-CHAT_FILE = os.path.join(BASE_DIR, "memory.json")
+DATA_FILE_PATH = os.path.join(BASE_DIR, "/home/sonu-nitu/venchat/bin/PROJECT/DATA.json")
+CHAT_FILE = os.path.join(BASE_DIR, "/home/sonu-nitu/venchat/bin/PROJECT/memory.json")
 
 # Global data containers for intents and technical categories
 data = {}
@@ -264,21 +265,30 @@ def semantic_curriculum_search(user_query, chats):
     return None
 
 def get_bot_response(user_message, chats):
-    """Processes message patterns through Naive Bayes Predictors and Semantic Curriculum checks."""
+    
+    """Resolves prompts through predictive models and curriculum match rules."""
     load_data()
     
+    # Clean the input message
+    clean_msg = user_message.lower().strip()
+    
+    # 🌟 FIX: Catch short filler/affirmation words immediately 
+    if clean_msg in ["yes", "sure", "ok", "yep", "yeah", "okay"]:
+        return "Awesome! Let me know what programming topic or language concept you want to explore next, or type something like 'explain functions in python'!"
+
+    # Direct exact-match fallback for simple greetings
+    for intent in intents:
+        if clean_msg in [pattern.lower().strip() for pattern in intent.get("patterns", [])]:
+            return random.choice(intent["responses"])
+            
     # 1. Machine Learning Prediction via Naive Bayes (Scikit-Learn Pipeline)
     if ml_classifier_pipeline is not None:
         try:
-            # Predict intent categorical class tag
             predicted_tag = ml_classifier_pipeline.predict([user_message])[0]
-            
-            # Extract prediction confidence metrics
             probabilities = ml_classifier_pipeline.predict_proba([user_message])[0]
             max_probability = np.max(probabilities)
             
-            # Apply a fallback validation threshold (e.g., 40% model confidence)
-            if max_probability > 0.2 and predicted_tag != "fallback" and predicted_tag != "language_query":
+            if max_probability > 0.30 and predicted_tag != "fallback" and predicted_tag != "language_query":
                 for intent in intents:
                     if intent.get("tag") == predicted_tag:
                         return random.choice(intent["responses"])
@@ -291,7 +301,6 @@ def get_bot_response(user_message, chats):
         return curriculum_match
 
     return "🤖 I couldn't reliably map your query with my machine learning classifier. Try framing it explicitly like: 'explain functions in python'."
-
 # ------------------ SERVER ENDPOINTS & CHANNELS ------------------
 
 @CHATBOT.route("/")
