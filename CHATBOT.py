@@ -32,8 +32,8 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CHATBOT = Flask(__name__, static_folder="static")
 CHATBOT.secret_key = "scikit-nb-adaptive-nlp-key"
 
-DATA_FILE_PATH = os.path.join(BASE_DIR, "/home/sonu-nitu/venchat/bin/PROJECT/DATA.json")
-CHAT_FILE = os.path.join(BASE_DIR, "/home/sonu-nitu/venchat/bin/PROJECT/memory.json")
+DATA_FILE_PATH = os.path.join(BASE_DIR, "DATA.json")
+CHAT_FILE = os.path.join(BASE_DIR, "memory.json")
 
 # Global data containers for intents and technical categories
 data = {}
