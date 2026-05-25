@@ -7,6 +7,7 @@ from flask import Flask, render_template, request, jsonify
 
 # 1. Core NLP & Preprocessing Libraries (NLTK)
 import nltk
+
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
@@ -17,9 +18,6 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.pipeline import make_pipeline
 
 # Ensure necessary NLTK components are locally available
-
-# Ensure necessary NLTK components are locally available
-# Added 'corpora/punkt_tab' to fix the Render tokenization crash
 for dependency in ['tokenizers/punkt', 'corpora/stopwords', 'corpora/wordnet', 'corpora/punkt_tab']:
     try:
         nltk.data.find(dependency)
@@ -27,6 +25,7 @@ for dependency in ['tokenizers/punkt', 'corpora/stopwords', 'corpora/wordnet', '
         # Handle naming variation translation for the download utility
         download_target = dependency.split('/')[-1]
         nltk.download(download_target)
+
 # ------------------ ENVIRONMENT SETUP ------------------
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CHATBOT = Flask(__name__, static_folder="static")
@@ -41,7 +40,7 @@ intents = []
 categ = {}
 
 # Initialize NLTK structures
-lemmatizer = WordNetLemmatizer()
+lemmatizer = WordNetLemmatizer()  # Reduces words to their base form
 stop_words = set(stopwords.words('english'))
 stop_words.update({"want", "learn", "teach", "show", "explain", "about", "tell", "course", "please", "code", "example"})
 
@@ -144,144 +143,93 @@ def save_chat_history(chats):
 # Initial system dataset boot load
 load_data()
 
-# ------------------ ADAPTIVE & SEMANTIC LEARNING ------------------
+def get_char_ngrams(text, n=3):
+    """Breaks text into small letter combinations to tolerate typos."""
+    text = f" {text.strip()} "
+    return set(text[i:i+n] for i in range(len(text) - n + 1))
 
-def calculate_adaptive_weight(topic_title, chats):
-    """
-    Adaptive Learning Module: Evaluates conversation history patterns 
-    to dynamically shift topic selection biases based on past usage.
-    """
-    interaction_weight = 1.0
-    for chat in chats:
-        for msg in chat.get("messages", []):
-            bot_text = msg.get("bot", "")
-            if f"Topic Found: {topic_title.title()}" in bot_text:
-                interaction_weight += 0.20 # Step up selection probability
-    return min(interaction_weight, 3.0)
-
-def semantic_curriculum_search(user_query, chats):
-    """
-    Semantic Learning Vector Map: Evaluates keyword groups using 
-    synonym expansions, language limits, and adaptive weights.
-    """
-    query_tokens = set(custom_nltk_tokenizer(user_query))
-    if not query_tokens:
-        return None
-
-    target_lang = None
-    if "python" in query_tokens: target_lang = "python"
-    elif "java" in query_tokens: target_lang = "java"
-    elif "c" in query_tokens: target_lang = "c"
-
-    concept_synonyms = {
-        "loop": {"loop", "iteration", "for", "while", "repeat", "condition"},
-        "variable": {"variable", "scope", "memory", "type", "storage", "allocate"},
-        "function": {"function", "method", "modular", "logic", "def", "return"},
-        "tuple": {"tuple", "sequence", "immutable", "structure"},
-        "list": {"list", "sequence", "collection", "append", "array"},
-        "operator": {"operator", "arithmetic", "math", "logic", "calculate"}
-    }
-
-    expanded_tokens = set(query_tokens)
-    for core_concept, structural_words in concept_synonyms.items():
-        if core_concept in query_tokens:
-            expanded_tokens.update(structural_words)
-
-    best_topic = None
-    highest_score = 0.0
-    matched_cat = ""
-    matched_lvl = ""
-
-    for cat_name, cat_data in categ.items():
-        if not isinstance(cat_data, dict):
-            continue
+def check_semantic_similarity(user_msg, target_strings, threshold=0.2):
+    """Checks if the user's input closely overlaps with any targeted strings or patterns."""
+    user_grams = get_char_ngrams(user_msg)
+    
+    for target in target_strings:
+        clean_target = target.lower().strip().replace("?", "").replace(",", "")
+        target_grams = get_char_ngrams(clean_target)
         
-        lang_prefix = cat_name.lower().split()[0]
-        lang_multiplier = 1.0
+        intersection = user_grams.intersection(target_grams)
+        union = user_grams.union(target_grams)
         
-        if target_lang:
-            if target_lang == lang_prefix:
-                lang_multiplier = 3.5  
-            else:
-                lang_multiplier = 0.05 
-
-        for level_name, level_data in cat_data.items():
-            if not isinstance(level_data, dict) or "topics" not in level_data:
-                continue
-                
-            for topic in level_data["topics"]:
-                title_tokens = set(custom_nltk_tokenizer(topic.get("title", "")))
-                definition_tokens = set(custom_nltk_tokenizer(topic.get("definition", "")))
-                
-                title_hits = len(expanded_tokens.intersection(title_tokens))
-                def_hits = len(expanded_tokens.intersection(definition_tokens))
-                
-                base_score = (title_hits * 35) + (def_hits * 12)
-                
-                if topic.get("title", "").lower().strip() in user_query.lower():
-                    base_score += 90
-                
-                final_score = base_score * lang_multiplier
-                adaptive_multiplier = calculate_adaptive_weight(topic.get("title", ""), chats)
-                final_score *= adaptive_multiplier
-
-                if final_score > highest_score and base_score > 0:
-                    highest_score = final_score
-                    best_topic = topic
-                    matched_cat = cat_name
-                    matched_lvl = level_name
-
-    # Handle Category summaries if specific search token weight is minimal
-    if highest_score < 20:
-        for cat_name, cat_data in categ.items():
-            lang_prefix = cat_name.lower().split()[0]
-            if lang_prefix in query_tokens and len(query_tokens) <= 2:
-                response = f"# 🚀 Category Profile: {cat_name.title()}\n\n"
-                if "description" in cat_data:
-                    response += f"**Core Concept:** {cat_data['description']}\n\n"
-                if "history" in cat_data:
-                    response += f"**Historical Context:** {cat_data['history']}\n\n"
-                return response.strip()
-
-    # Build topic content output structure
-    if best_topic and highest_score >= 15:
-        title = best_topic.get("title", "").title()
-        definition = best_topic.get("definition", "")
-        explanation = best_topic.get("explanation", "")
-        
-        response = f"# 🚀 Topic Found: {title}\n"
-        response += f"**Curriculum Area:** {matched_cat.title()} — [{matched_lvl.title()} Track]\n\n"
-        response += f"**Definition:** *{definition}*\n\n"
-        if explanation:
-            response += f"### 📘 Conceptual Breakdown:\n{explanation}\n\n"
-            
-        examples = best_topic.get("code_examples", [])
-        if examples:
-            response += "### 💻 Applied Code Sandbox:\n"
-            for idx, code_snippet in enumerate(examples, 1):
-                response += f"```javascript\n// Functional Sample #{idx}\n{code_snippet}\n```\n\n"
-        return response.strip()
-
-    return None
+        if union:
+            similarity = len(intersection) / len(union)
+            if similarity >= threshold:
+                return True
+    return False
 
 def get_bot_response(user_message, chats):
+    """Resolves prompts by dynamically digging into sub-categories (like 'Basic') to find topics."""
+    load_data()  # Pulls fresh references from DATA.json
     
-    """Resolves prompts through predictive models and curriculum match rules."""
-    load_data()
+    # Standardize user input
+    clean_msg = user_message.lower().strip().replace("?", "").replace(",", "")
+    msg_words = clean_msg.split()
     
-    # Clean the input message
-    clean_msg = user_message.lower().strip()
-    
-    # 🌟 FIX: Catch short filler/affirmation words immediately 
-    if clean_msg in ["yes", "sure", "ok", "yep", "yeah", "okay"]:
-        return "Awesome! Let me know what programming topic or language concept you want to explore next, or type something like 'explain functions in python'!"
+    # 🌟 LEVEL 1: CHECK INTENTS
+    if intents:
+        for intent in intents:
+            patterns = intent.get("patterns", [])
+            if check_semantic_similarity(clean_msg, patterns, threshold=0.45):
+                return random.choice(intent["responses"])
 
-    # Direct exact-match fallback for simple greetings
-    for intent in intents:
-        if clean_msg in [pattern.lower().strip() for pattern in intent.get("patterns", [])]:
-            return random.choice(intent["responses"])
+    # 🌟 LEVEL 2: MULTI-LAYERED TOPIC COLLECTOR
+    matched_responses = []
+
+    if categ:
+        for cat_name, cat_data in categ.items():
+            # Create a list of dictionaries to inspect. 
+            # We check the main category layer AND any nested sub-layers (like "Basic")
+            layers_to_check = [cat_data]
             
-    # 1. Machine Learning Prediction via Naive Bayes (Scikit-Learn Pipeline)
+            for key, value in cat_data.items():
+                if isinstance(value, dict):  # This finds blocks like "Basic", "Advanced", etc.
+                    layers_to_check.append(value)
+            
+            # Now scan all discovered layers for topics
+            for layer in layers_to_check:
+                topics = layer.get("topics", [])
+                
+                for topic in topics:
+                    title = topic.get("title", "").lower().strip()
+                    
+                    # 1. Substring containment check
+                    # 2. Word-by-word plural protection lookup
+                    word_match = any((word in title or title in word) for word in msg_words)
+                    # 3. N-gram spelling typo check
+                    similarity_match = check_semantic_similarity(clean_msg, [title], threshold=0.40)
+                    
+                    if title in clean_msg or word_match or similarity_match:
+                        # Construct your layout card
+                        markdown_response = (
+                            f"# 🚀 Topic Found: {title.title()}\n"
+                            f"**Curriculum Category:** {cat_name.title()}\n\n"
+                            f"**Definition:** *{topic.get('definition', 'No definition provided.')}*\n\n"
+                            f"### 📘 Conceptual Breakdown:\n{topic.get('explanation', '')}\n\n"
+                        )
+                        
+                        # Append code windows if they exist
+                        examples = topic.get("code_examples", [])
+                        if examples:
+                            markdown_response += "### 💻 Applied Code Sandbox:\n"
+                            for example in examples:
+                                markdown_response += f"```\n{example}\n```\n"
+                                
+                        matched_responses.append(markdown_response)
+
+    # If matches were found across any depth of your JSON, return them combined
+    if matched_responses:
+        return "\n\n---\n\n".join(matched_responses)
+
+    # ---------------------------------------------------------------------
+    # 3. Machine Learning Prediction via Naive Bayes (Fallback security)
     if ml_classifier_pipeline is not None:
         try:
             predicted_tag = ml_classifier_pipeline.predict([user_message])[0]
@@ -295,13 +243,8 @@ def get_bot_response(user_message, chats):
         except Exception as e:
             print(f"⚠️ Classifier inference notice: {e}")
 
-    # 2. Adaptive Semantic Data Mapping Fallback
-    curriculum_match = semantic_curriculum_search(user_message, chats)
-    if curriculum_match:
-        return curriculum_match
-
     return "🤖 I couldn't reliably map your query with my machine learning classifier. Try framing it explicitly like: 'explain functions in python'."
-# ------------------ SERVER ENDPOINTS & CHANNELS ------------------
+# ------------------ FLASK WEB ROUTING ENDPOINTS ------------------
 
 @CHATBOT.route("/")
 def home():
@@ -376,7 +319,7 @@ def chatbot_api():
                 final_chat_name = "General Discussion"
             else:
                 final_chat_name = " ".join(words[:4])
-                if len(words) > 4:
+                if len(words) > 20:
                     final_chat_name += "..."
            
             existing_names = [c.get("name", "").strip() for c in chats]
