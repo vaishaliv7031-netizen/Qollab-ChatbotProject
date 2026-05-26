@@ -9,9 +9,10 @@
                 "greetings"
             ],
             "responses": [
-                "Hello! Ready to dive deep into coding?",
-                "# 🤖 Programming Agent System Initialized 🚀\\n\\nHello! I am your **Interactive Programming Agent**, your dedicated AI companion built to help you master software development tracks, explore universal computing principles, and break down complex logic into human-understandable code.\\n\\n---\\n\\n### 📘 What I Am Loaded With\\nMy current knowledge base contains fully structured tracks pulled straight from my core memory matrix:\\n\\n• **🌐 Universal Programming Grammar:**\\n    • **Variables & Memory:** Allocation, initialization, and tracking data references.\\n    • **Scope Realities:** Master the boundaries of *Global Scope* versus memory-safe *Local Scope*.\\n    • **Constants:** Implementing immutable values safely (like `final` in Java or `const` in JS).\\n\\n• **🐍 Python Track [Basic to Applied]:**\\n    • Syntax fundamentals, control flow architectures, and structural patterns.\\n    • **Loops & Iteration:** Master `for` loops across collections and condition-driven `while` sequences.\\n\\n• **☕ Java Track [Object-Oriented Structure]:**\\n    • Strongly-typed environment setups, main execution blocks, and standard syntax rules.\\n    • **Iteration Structures:** Deep-dives into traditional counter loops and block repetition.\\n\\n• **💻 C Track [System-Level Foundations]:**\\n    • Procedural control tracks and structured flow layouts.\\n\\n---\\n\\n### 💻 Live Applied Code Sandboxes\\nWhenever you ask for a topic, I won't just explain it in theory. I will generate an **Applied Code Sandbox** right in your chat window featuring clean, production-ready syntax examples that you can immediately read, copy, and learn from.\\n\\n---\\n\\n### 💡 How to Interact with Me\\nFor the best results! try framing your queries explicitly. Here are a few great prompts to copy-paste and try right now:\\n• 👉 *\\\"Explain variables and scope\\\"*\\n• 👉 *\\\"Show me python loops\\\"*\\n• 👉 *\\\"How do loops work in Java?\\\"*\\n\\n---\\n*System Core Status: Connected 🛡️ | Premium AI Workspace Active*\\nWhat language or concept are we exploring today? Let's write some code!",
-                "Hi there! What are we learning today?"
+                "Hello!😊 Ready to dive deep into coding?",
+                "Hi there👋! What are we learning today?",
+                "# 😃 Programming Agent System Initialized 🚀\\n\\nHello! I am your **Interactive Programming Agent**, your dedicated AI companion built to help you master software development tracks, explore universal computing principles, and break down complex logic into human-understandable code.\\n\\n---\\n\\n### 📘 What I Am Loaded With\\nMy current knowledge base contains fully structured tracks pulled straight from my core memory matrix:\\n\\n• **🌐 Universal Programming Grammar:**\\n    • **Variables & Memory:** Allocation, initialization, and tracking data references.\\n    • **Scope Realities:** Master the boundaries of *Global Scope* versus memory-safe *Local Scope*.\\n    • **Constants:** Implementing immutable values safely (like `final` in Java or `const` in JS).\\n\\n• **🐍 Python Track [Basic to Applied]:**\\n    • Syntax fundamentals, control flow architectures, and structural patterns.\\n    • **Loops & Iteration:** Master `for` loops across collections and condition-driven `while` sequences.\\n\\n• **☕ Java Track [Object-Oriented Structure]:**\\n    • Strongly-typed environment setups, main execution blocks, and standard syntax rules.\\n    • **Iteration Structures:** Deep-dives into traditional counter loops and block repetition.\\n\\n• **💻 C Track [System-Level Foundations]:**\\n    • Procedural control tracks and structured flow layouts.\\n\\n---\\n\\n### 💻 Live Applied Code Sandboxes\\nWhenever you ask for a topic, I won't just explain it in theory. I will generate an **Applied Code Sandbox** right in your chat window featuring clean, production-ready syntax examples that you can immediately read, copy, and learn from.\\n\\n---\\n\\n### 💡 How to Interact with Me\\nFor the best results! try framing your queries explicitly. Here are a few great prompts to copy-paste and try right now:\\n• 👉 *\\\"Explain variables and scope\\\"*\\n• 👉 *\\\"Show me python loops\\\"*\\n• 👉 *\\\"How do loops work in Java?\\\"*\\n\\n---\\n*System Core Status: Connected 🛡️ | Premium AI Workspace Active*\\nWhat language or concept are we exploring today? Let's write some code!",
+               
             ]
         },
         {
@@ -21,8 +22,8 @@
                 "sure"
             ],
             "responses": [
-                "okay! let move ahead",
-                "great !"
+                "okay! let move ahead😎",
+                "great😃!"
             ]
         },
         {
@@ -33,9 +34,10 @@
                 "what about c programming"
             ],
             "responses": [
-                "Python is a great choice for beginners! It has simple syntax and powerful libraries.",
-                "Java is widely used in enterprise applications and Android development.",
-                "C is a foundational language that gives you a deep understanding of how computers work. Which one would you like to start with?"
+                "Python is a great choice for beginners🙌! It has simple syntax and powerful libraries.",
+                "Java is widely used in enterprise applications and Android development😎.",
+                "C is a foundational language that gives you a deep understanding of how computers work😃. Which one would you like to start with?"
+            ]
             ]
         },
         {
