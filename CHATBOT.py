@@ -31,8 +31,8 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CHATBOT = Flask(__name__, static_folder="static")
 CHATBOT.secret_key = "scikit-nb-adaptive-nlp-key"
 
-DATA_FILE_PATH = os.path.join(BASE_DIR, "DATA.json")
-CHAT_FILE = os.path.join(BASE_DIR, "memory.json")
+DATA_FILE_PATH = os.path.join(BASE_DIR, "/home/sonu-nitu/venchat/bin/PROJECT/DATA.json")
+CHAT_FILE = os.path.join(BASE_DIR, "/home/sonu-nitu/venchat/bin/PROJECT/memory.json")
 
 # Global data containers for intents and technical categories
 data = {}
@@ -243,8 +243,6 @@ def get_bot_response(user_message, chats):
         except Exception as e:
             print(f"⚠️ Classifier inference notice: {e}")
         return " hey👋!.. can you ask something related to my knowledge... i am happy to give you answers 🥰 "
-    
-
 # ------------------ FLASK WEB ROUTING ENDPOINTS ------------------
 
 @CHATBOT.route("/")
