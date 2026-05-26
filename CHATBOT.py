@@ -242,7 +242,7 @@ def get_bot_response(user_message, chats):
                         return random.choice(intent["responses"])
         except Exception as e:
             print(f"⚠️ Classifier inference notice: {e}")
-     return " hey👋!.. can you ask something related to my knowledge... i am happy to give you answers 🥰 "
+      return " hey👋!.. can you ask something related to my knowledge... i am happy to give you answers 🥰 "
     
 
 # ------------------ FLASK WEB ROUTING ENDPOINTS ------------------
