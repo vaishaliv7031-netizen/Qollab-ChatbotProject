@@ -242,8 +242,9 @@ def get_bot_response(user_message, chats):
                         return random.choice(intent["responses"])
         except Exception as e:
             print(f"⚠️ Classifier inference notice: {e}")
+     return " hey👋!.. can you ask something related to my knowledge... i am happy to give you answers 🥰 "
+    
 
-    return "🤖 I couldn't reliably map your query with my machine learning classifier. Try framing it explicitly like: 'explain functions in python'."
 # ------------------ FLASK WEB ROUTING ENDPOINTS ------------------
 
 @CHATBOT.route("/")
