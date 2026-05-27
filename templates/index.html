@@ -421,7 +421,6 @@
                 body: JSON.stringify({ chat_name: name })
             }).then(() => fetchSavedChats());
         }
-
         function appendBubble(text, cssClass, userQueryContext = "") {
             const container = document.getElementById("msgContainer");
             
@@ -432,17 +431,23 @@
             bubble.className = `msg ${cssClass}`;
             
             if (cssClass === "bot-msg") {
-                // 🌟 FIXED: Safe fallback if userQueryContext is missing or undefined
                 let cleanedQuery = userQueryContext ? userQueryContext.toLowerCase() : "";
                 let filteredText = text;
 
+                // 1. If the user asks for Python Loops, show the Python layout
                 if (cleanedQuery.includes("loop") && cleanedQuery.includes("python")) {
                     filteredText = `# 🚀 Topic Found: Python Loops and Iteration\n**Curriculum Area:** Python Basic — [Basic Track]\n\n**Definition:** *Structures used to execute a block of code repeatedly in Python.*\n\n### 📘 Conceptual Breakdown:\n1. **For Loops**: Used to iterate over sequences (like lists, tuples, or ranges).\n2. **While Loops**: Execute as long as a condition evaluates to True.\n\n### 💻 Applied Code Sandbox:\n\`\`\`python\n# Iterating with a for loop\nfor i in range(3):\n    print(i)\n\n# Checking states with a while loop\ncount = 0\nwhile count < 3:\n    print(count)\n    count += 1\n\`\`\``;
-                } else if (cleanedQuery.includes("loop") && cleanedQuery.includes("java")) {
+                } 
+                // 2. If the user asks for Java Loops, show the Java layout
+                else if (cleanedQuery.includes("loop") && cleanedQuery.includes("java")) {
                     filteredText = `# 🚀 Topic Found: Java Iteration Loops\n**Curriculum Area:** Java Basic — [Basic Track]\n\n**Definition:** *Control flow structures built to repeat standard blocks of code multiple times in Java.*\n\n### 📘 Conceptual Breakdown:\n1. **For Loop**: Ideal when the exact number of iterations is known.\n2. **While Loop**: Tests conditions before running the inner statement blocks.\n\n### 💻 Applied Code Sandbox:\n\`\`\`java\n// Standard Java for loop structure\nfor(int i = 0; i < 3; i++) {\n    System.out.println(i);\n}\n\`\`\``;
                 }
+                // 🌟 3. NEW STEP: If the user asks for C loops, intercept the message and show C layout!
+                else if (cleanedQuery.includes("loop") && (cleanedQuery.includes("c ") || cleanedQuery === "c" || cleanedQuery.endsWith(" c") || cleanedQuery.startsWith("c "))) {
+                    filteredText = `# 🚀 Topic Found: C System-Level Loops\n**Curriculum Area:** C Track — [System-Level Foundations]\n\n**Definition:** *Procedural control tracks used for structured flow layout and block repetition in C.*\n\n### 📘 Conceptual Breakdown:\n1. **For Loop**: Used to repeat a block of statements a specific number of times.\n2. **While Loop**: Repeats a statement while a given condition remains true.\n3. **Do-While Loop**: Executes the block once first, then checks the condition.\n\n### 💻 Applied Code Sandbox:\n\`\`\`c\n#include <stdio.h>\n\nint main() {\n    // Standard C loop structure\n    for(int i = 0; i < 3; i++) {\n        printf("%d\\n", i);\n    }\n    return 0;\n}\n\`\`\``;
+                }
 
-                // 🌟 FIXED: Replaces double backslashes safely before compiling
+                // Clean any double-escaped line breaks and compile to Markdown
                 let finalMarkdown = filteredText.replace(/\\n/g, '\n');
                 bubble.innerHTML = marked.parse(finalMarkdown); 
             } else {
@@ -451,12 +456,13 @@
             
             container.appendChild(bubble);
 
-            // Smoothly scroll container forward for short immediate entries
+            // Smoothly scroll down to show the new response
             container.scrollTo({    
                 top: container.scrollHeight,
                 behavior: 'smooth'
             });
         }
+
             
         function sendPrompt() {
             const input = document.getElementById("userInput");
