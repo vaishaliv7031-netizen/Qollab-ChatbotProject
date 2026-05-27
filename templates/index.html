@@ -1,33 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
-   <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Programming Agent Workspace</title>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
      
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { display: flex; height: 100vh; background-color: #0d1224; color: #fff; overflow: hidden; }
+       /* ==========================================================================
+           🔒 VIEWPORT LOCKING SYSTEM (Stops the page from moving/scrolling)
+           ========================================================================== */
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+        }
         
-        /* Sidebar Panel with Smooth CSS Slide Transition */
+        body { 
+            display: flex; 
+            width: 100vw;
+            height: 100vh; /* Locks body to exact viewport height */
+            background-color: #0d1224; 
+            color: #fff; 
+            overflow: hidden; /* Prevent global page scrolling */
+            position: fixed;  /* Prevents mobile bounce/scroll pull-down effect */
+        }
+        
+        /* Sidebar Panel - Fixed height matching parent */
         .sidebar { 
             width: 300px; 
             background-color: #171e36; 
             display: flex; 
-            display: flex;
             flex-direction: column; 
             padding: 20px 15px; 
             gap: 20px; 
             border-right: 1px solid #1e294b; 
-            transition: transform 0.3s ease, margin-left 0.3s ease;
-            z-index: index 10;
-            height: 100%;
+            transition: transform 0.3s ease;
+            z-index: 10;
+            height: 100vh; 
         }
-        
-        /* Sidebar Collapsed State Configuration */
-        .sidebar.collapsed {
-            margin-left: -300px;
+
+        /* Main Chat Frame - Vertically stacked, takes up all remaining space */
+        .chat-area { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            height: 100vh; /* Must match parent */
+            background-color: #0f172a; 
+            overflow: hidden; /* Stops whole chat area from scrolling */
+        }
+
+        .chat-header { 
+            height: 70px; /* Fixed explicit height for header */
+            padding: 0 20px; 
+            background-color: #0f172a; 
+            border-bottom: 1px solid #1e294b; 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+            flex-shrink: 0; /* Prevents header from squishing */
+        }
+
+        /* 🌟 THE ONLY BOX ALLOWED TO SCROLL */
+        .message-container { 
+            flex: 1; 
+            overflow-y: auto; /* Activates scrollbars ONLY inside this container */
+            padding: 30px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 20px; 
+            background-color: #0f172a;
+        }
+
+        .input-panel { 
+            height: 90px; /* Fixed explicit height for input desk */
+            padding: 0 30px; 
+            background-color: #0f172a; 
+            display: flex; 
+            gap: 15px; 
+            align-items: center; 
+            flex-shrink: 0; /* Prevents input panel from hiding under the keyboard */
+            border-top: 1px solid #1e294b;
         }
            
         /* Active Workspace Card */
@@ -59,10 +113,10 @@
         
         .menu-toggle 
         { 
-         background: #2563eb; /* Changed from dark blue to a bright, vibrant blue */
+         background: #2563eb; 
          border: none; 
          color: #fff; 
-         width: 40px; /* Made slightly larger for easier clicking on mobile touch screens */
+         width: 40px; 
          height: 40px; 
          border-radius: 6px; 
          display: flex; 
@@ -70,7 +124,7 @@
          justify-content: center; 
          cursor: pointer; 
          font-size: 18px; 
-         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); /* Adds depth so it sits cleanly above the interface background */
+         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); 
          z-index: 12;
         }
         .menu-toggle:hover { background: #1d4ed8;}
@@ -81,23 +135,76 @@
         /* Bubble Elements Styling */
         .msg { max-width: 80%; padding: 14px 18px; border-radius: 8px; line-height: 1.6; font-size: 14px; word-wrap: break-word; }
         .user-msg { background-color: #2563eb; color: #fff; align-self: flex-end; }
-        .bot-msg { background: transparent; color: #cbd5e1; align-self: flex-start; width: 100%; max-width: 100%; padding: 0; }
+        .bot-msg { 
+            background: transparent !important; 
+            color: #cbd5e1 !important; 
+            align-self: flex-start !important; 
+            width: 100% !important; 
+            max-width: 100% !important; 
+            padding: 5px 10px !important;
+
+
+            /* This forces the exact small font size you want */
+            font-size: 14px !important; 
+            font-weight: normal !important;
+            line-height: 1.6 !important;
+            
+            /* This completely stops text from running off the screen */
+            white-space: normal !important; 
+            word-wrap: break-word !important;
+            word-break: break-word !important;
+            display: block !important;
+        } 
         
         /* Markdown Spacing Rule sets */
         .bot-msg pre { background: #0b0f19; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 14px 0; border: 1px solid #1e294b; }
-        .bot-msg code { font-family: 'Courier New', Courier, monospace; color: #f472b6; font-size: 13px; }
-        .bot-msg h1 { font-size: 19px; margin-bottom: 12px; color: #fff; font-weight: 600; }
-        .bot-msg h3 { font-size: 15px; margin: 16px 0 8px 0; color: #fff; font-weight: 600; }
-        .bot-msg p { margin-bottom: 8px; color: #cbd5e1; }
+        .bot-msg code {
+             font-family: Courier New,Courier, monospace;
+              color: #f472b6; 
+              font-size: 13px; 
+            }
+        .bot-msg h1 { 
+            font-size: 19px; 
+            margin-bottom: 12px; 
+            color: #fff; 
+            font-weight: 600; 
+        }
+        .bot-msg h2 {
+            font-size: 18px; 
+            margin: 16px 0 10px 0;
+            color: #fff; 
+            font-weight: 600; 
+            }
+        .bot-msg h3 { 
+            font-size: 16px !important;
+            font-weight: bold !important;
+            color: #ffffff !important;
+            margin-top: 15px !important;
+            margin-bottom: 5px !important;
+            }
+        .bot-msg p {
+            font-size: 14px !important;
+            font-weight: normal !important;
+            color: #cbd5e1 !important;
+            line-height: 1.6 !important;
+            }
+            /* Standard Paragraphs */
+        .bot-msg p { font-size: 14px; margin-bottom: 12px; color: #cbd5e1; line-height: 1.6; }
 
+        /* Lists & Bullet Points - Ensuring sizes match standard paragraphs perfectly */
+        .bot-msg ul, .bot-msg ol { margin: 8px 0 14px 20px; }
+        .bot-msg li { font-size: 14px; margin-bottom: 6px; color: #cbd5e1; line-height: 1.5; }
+
+        /* Code Blocks & Inline Sandboxes */
+        
         /* Input Container Elements */
         .input-panel { padding: 25px 30px; background-color: #0f172a; display: flex; gap: 15px; align-items: center; }
         .input-wrapper { flex: 1; background: #1e294b; border: 1px solid #334155; border-radius: 8px; display: flex; align-items: center; padding: 4px 10px; }
         .input-wrapper:focus-within { border-color: #3b82f6; }
         .input-wrapper input { flex: 1; padding: 12px; background: transparent; border: none; color: white; font-size: 14px; outline: none; }
-        
         .send-btn { padding: 12px 24px; background: #10b981; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px; transition: background 0.2s; white-space: nowrap; }
         .send-btn:hover { background: #059669; }
+
         /* ==========================================================================
            📱 RESPONSIVE MEDIA QUERIES (Mobile Breakpoints Overwrite)
            ========================================================================== */
@@ -106,13 +213,13 @@
                 position: absolute;
                 left: 0;
                 top: 0;
-                transform: translateX(-100%); /* Keeps it hidden leftwards by default */
+                transform: translateX(-100%); 
                 width: 280px;
-                margin-left: 0 !important; /* Overrides laptop margin-left values */
+                margin-left: 0 !important; 
             }
 
             .sidebar.active {
-                transform: translateX(0); /* Slides perfectly into view on phone screen tap */
+                transform: translateX(0); 
             }
 
             .chat-header {
@@ -132,7 +239,6 @@
             .input-panel { padding: 15px; gap: 10px; }
             .send-btn { padding: 12px 16px; }
         }
- 
      
     </style>
 </head>
@@ -178,40 +284,32 @@
         window.onload = function() {
             fetchSavedChats();
         };
+
         function toggleSidebar() {
             const sidebar = document.getElementById("sidebarPanel");
             if (window.innerWidth <= 768) {
-                // Mobile View Behavior
                 sidebar.classList.toggle("active");
                 sidebar.classList.remove("collapsed");
             } else {
-                // Laptop View Behavior
                 sidebar.classList.toggle("collapsed");
-                // Ensure mobile active class is cleared out
-                 sidebar.classList.remove("active");
+                sidebar.classList.remove("active");
             }
         }
-         // Global click interceptor to auto-close the drawer on mobile when clicking outside
+
         document.addEventListener("click", function(event) {
-            if (window.innerWidth <= 768) 
-            {
+            if (window.innerWidth <= 768) {
                 const sidebar = document.getElementById("sidebarPanel");
                 const menuToggle = document.querySelector(".menu-toggle");
         
-        // If the sidebar is currently open and the user clicks completely outside of it
-            if (sidebar.classList.contains("active") && 
-            !sidebar.contains(event.target) && 
-            !menuToggle.contains(event.target)) 
-              {
-                   sidebar.classList.remove("active");
-               }
+                if (sidebar.classList.contains("active") && 
+                    !sidebar.contains(event.target) && 
+                    !menuToggle.contains(event.target)) {
+                    sidebar.classList.remove("active");
+                }
             }
         }); 
 
-
-       
-        function fetchSavedChats() 
-         {
+        function fetchSavedChats() {
             fetch('/get_chats')
                 .then(res => res.json())
                 .then(data => {
@@ -222,9 +320,7 @@
                         createNewChat();
                     }
                 });
-            } 
-
-
+        } 
 
         function renderSidebar(chats) {
             const list = document.getElementById("chatList");
@@ -232,7 +328,14 @@
             chats.forEach(chat => {
                 const item = document.createElement("div");
                 item.className = `chat-item ${chat.name === currentChatName ? 'active' : ''}`;
-                item.onclick = () => loadChatWindow(chat.name);
+                
+                // ◄ FIXED: Auto-closes drawer on phone after selecting a thread option
+                item.onclick = () => {
+                    loadChatWindow(chat.name);
+                    if (window.innerWidth <= 768) {
+                        document.getElementById("sidebarPanel").classList.remove("active");
+                    }
+                };
                 
                 const infoWrapper = document.createElement("div");
                 infoWrapper.className = "chat-info";
@@ -279,7 +382,11 @@
             }
 
             chatObj.messages.forEach(msg => {
-                if(msg.user) appendBubble(msg.user, "user-msg");
+                if(msg.user) {
+    // Replace literal '\n' characters with actual line breaks for crisp user layout formatting
+               let cleanUserText = msg.user.replace(/\\n/g, '\n');
+                appendBubble(cleanUserText, "user-msg");
+                }
                 if(msg.bot) appendBubble(msg.bot, "bot-msg", msg.user);
             });
             container.scrollTop = container.scrollHeight;
@@ -318,25 +425,32 @@
             bubble.className = `msg ${cssClass}`;
             
             if (cssClass === "bot-msg") {
-                let cleanedQuery = userQueryContext.toLowerCase();
+                // 🌟 FIXED: Safe fallback if userQueryContext is missing or undefined
+                let cleanedQuery = userQueryContext ? userQueryContext.toLowerCase() : "";
                 let filteredText = text;
 
-                // FRONTEND OVERRIDE INTERCEPTOR FOR LOOP MATCH ERRORS
                 if (cleanedQuery.includes("loop") && cleanedQuery.includes("python")) {
                     filteredText = `# 🚀 Topic Found: Python Loops and Iteration\n**Curriculum Area:** Python Basic — [Basic Track]\n\n**Definition:** *Structures used to execute a block of code repeatedly in Python.*\n\n### 📘 Conceptual Breakdown:\n1. **For Loops**: Used to iterate over sequences (like lists, tuples, or ranges).\n2. **While Loops**: Execute as long as a condition evaluates to True.\n\n### 💻 Applied Code Sandbox:\n\`\`\`python\n# Iterating with a for loop\nfor i in range(3):\n    print(i)\n\n# Checking states with a while loop\ncount = 0\nwhile count < 3:\n    print(count)\n    count += 1\n\`\`\``;
                 } else if (cleanedQuery.includes("loop") && cleanedQuery.includes("java")) {
                     filteredText = `# 🚀 Topic Found: Java Iteration Loops\n**Curriculum Area:** Java Basic — [Basic Track]\n\n**Definition:** *Control flow structures built to repeat standard blocks of code multiple times in Java.*\n\n### 📘 Conceptual Breakdown:\n1. **For Loop**: Ideal when the exact number of iterations is known.\n2. **While Loop**: Tests conditions before running the inner statement blocks.\n\n### 💻 Applied Code Sandbox:\n\`\`\`java\n// Standard Java for loop structure\nfor(int i = 0; i < 3; i++) {\n    System.out.println(i);\n}\n\`\`\``;
                 }
 
-                bubble.innerHTML = marked.parse(filteredText); 
+                // 🌟 FIXED: Replaces double backslashes safely before compiling
+                let finalMarkdown = filteredText.replace(/\\n/g, '\n');
+                bubble.innerHTML = marked.parse(finalMarkdown); 
             } else {
                 bubble.innerText = text;
             }
             
             container.appendChild(bubble);
-            container.scrollTop = container.scrollHeight;
+
+            // Smoothly scroll container forward for short immediate entries
+            container.scrollTo({    
+                top: container.scrollHeight,
+                behavior: 'smooth'
+            });
         }
-    
+            
         function sendPrompt() {
             const input = document.getElementById("userInput");
             const query = input.value.trim();
@@ -358,6 +472,13 @@
                     document.getElementById("currentChatTitle").innerText = `🎓 Programming_Agent - ${currentChatName}`;
                 }
                 fetch('/get_chats').then(r => r.json()).then(chats => renderSidebar(chats));
+
+                // 🌟 FIXED: Smoothly scrolls to focus on the TOP of the new bot response
+                const messages = document.getElementsByClassName("bot-msg");
+                if (messages.length > 0) {
+                    const lastBotMessage = messages[messages.length - 1];
+                    lastBotMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             });
         }
     </script>
