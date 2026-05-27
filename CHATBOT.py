@@ -3,7 +3,7 @@ import re
 import json
 import random
 import numpy as np
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify,session 
 
 # 1. Core NLP & Preprocessing Libraries (NLTK)
 import nltk
@@ -118,7 +118,7 @@ def load_data():
     except Exception as e:
         print(f"❌ Data load error: {e}")
 
-def load_chat_history():
+'''def load_chat_history():
     if not os.path.exists(CHAT_FILE): 
         with open(CHAT_FILE, "w", encoding="utf-8") as f:
             json.dump([], f)
@@ -129,17 +129,29 @@ def load_chat_history():
             return json.loads(content) if content else []
     except Exception as e:
         print(f"❌ Storage file system access fault: {e}")
-        return []
+        return []'''
 
-def save_chat_history(chats):
+'''def save_chat_history(chats):
     try:
         with open(CHAT_FILE, "w", encoding="utf-8") as f:
             json.dump(chats, f, indent=4)
             f.flush()
             os.fsync(f.fileno())  
     except Exception as e: 
-        print(f"❌ Storage write failure: {e}")
+        print(f"❌ Storage write failure: {e}")'''
 
+
+#for private conversation for every student
+def load_chat_history():
+    """Loads a private chat history array unique to the current user's browser session."""
+    if 'history' not in session:
+        session['history'] = []
+    return session['history']
+
+def save_chat_history(chats):
+    """Saves the chat array into the user's private session container."""
+    session['history'] = chats
+    session.modified = True  # Tells Flask to save the updated cookie data
 # Initial system dataset boot load
 load_data()
 
@@ -194,19 +206,26 @@ def get_bot_response(user_message, chats):
                     layers_to_check.append(value)
             
             # Now scan all discovered layers for topics
+            # Now scan all discovered layers for topics
             for layer in layers_to_check:
-                topics = layer.get("topics", [])
-                
-                for topic in topics:
-                    title = topic.get("title", "").lower().strip()
-                    
-                    # 1. Substring containment check
-                    # 2. Word-by-word plural protection lookup
-                    word_match = any((word in title or title in word) for word in msg_words)
-                    # 3. N-gram spelling typo check
-                    similarity_match = check_semantic_similarity(clean_msg, [title], threshold=0.40)
-                    
-                    if title in clean_msg or word_match or similarity_match:
+              topics = layer.get("topics", [])
+    
+            for topic in topics:
+                     title = topic.get("title", "").lower().strip()
+        
+        # Exact match logic or smart n-gram evaluation
+                     exact_match = (clean_msg == title)
+                     word_match = any((word == title) for word in msg_words)
+                     similarity_match = check_semantic_similarity(clean_msg, [title], threshold=0.45)
+        
+        # 🌟 FIXED: Guard against single-character inputs triggers (like "c", "p", etc.)
+    if len(clean_msg) <= 2:
+                should_trigger = exact_match or word_match
+    else:
+            should_trigger = (title in clean_msg) or word_match or similarity_match
+            
+    if should_trigger:
+            # Construct your layout card down here as usual...
                         # Construct your layout card
                         markdown_response = (
                             f"# 🚀 Topic Found: {title.title()}\n"
