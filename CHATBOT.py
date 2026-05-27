@@ -3,11 +3,10 @@ import re
 import json
 import random
 import numpy as np
-from flask import Flask, render_template, request, jsonify,session 
+from flask import Flask, render_template, request, jsonify, session 
 
 # 1. Core NLP & Preprocessing Libraries (NLTK)
 import nltk
-
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
@@ -22,7 +21,6 @@ for dependency in ['tokenizers/punkt', 'corpora/stopwords', 'corpora/wordnet', '
     try:
         nltk.data.find(dependency)
     except LookupError:
-        # Handle naming variation translation for the download utility
         download_target = dependency.split('/')[-1]
         nltk.download(download_target)
 
@@ -31,6 +29,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CHATBOT = Flask(__name__, static_folder="static")
 CHATBOT.secret_key = "scikit-nb-adaptive-nlp-key"
 
+# Fixed Absolute File Paths
 DATA_FILE_PATH = os.path.join(BASE_DIR, "DATA.json")
 CHAT_FILE = os.path.join(BASE_DIR, "memory.json")
 
@@ -40,7 +39,7 @@ intents = []
 categ = {}
 
 # Initialize NLTK structures
-lemmatizer = WordNetLemmatizer()  # Reduces words to their base form
+lemmatizer = WordNetLemmatizer()  
 stop_words = set(stopwords.words('english'))
 stop_words.update({"want", "learn", "teach", "show", "explain", "about", "tell", "course", "please", "code", "example"})
 
@@ -87,12 +86,10 @@ def train_naive_bayes_model():
             training_labels.append(tag)
             
     if training_sentences and training_labels:
-        # Build an integrated vectorization and classification pipeline
         ml_classifier_pipeline = make_pipeline(
             TfidfVectorizer(tokenizer=custom_nltk_tokenizer, token_pattern=None, lowercase=False),
-            MultinomialNB(alpha=1.0) # Laplace Smoothing applied via alpha=1.0
+            MultinomialNB(alpha=1.0)
         )
-        # Train the model
         ml_classifier_pipeline.fit(training_sentences, training_labels)
         print("🚀 Naive Bayes Classifier trained successfully using Scikit-Learn!")
     else:
@@ -107,10 +104,16 @@ def load_data():
         if os.path.exists(DATA_FILE_PATH):
             with open(DATA_FILE_PATH, "r", encoding="utf-8") as f:
                 data = json.load(f)
-            intents = data.get("intents", [])
-            categ = data.get("categories", {})
             
-            # Retrain model with any newly configured intent data matrices
+            # Safe checking if root data is a list wrapper or raw dictionary object
+            if isinstance(data, list) and len(data) > 0:
+                root_item = data[0]
+            else:
+                root_item = data
+
+            intents = root_item.get("intents", [])
+            categ = root_item.get("categories", {})
+            
             train_naive_bayes_model()
         else:
             data = {"intents": [], "categories": {}}
@@ -118,30 +121,7 @@ def load_data():
     except Exception as e:
         print(f"❌ Data load error: {e}")
 
-'''def load_chat_history():
-    if not os.path.exists(CHAT_FILE): 
-        with open(CHAT_FILE, "w", encoding="utf-8") as f:
-            json.dump([], f)
-        return []
-    try:
-        with open(CHAT_FILE, "r", encoding="utf-8") as f:
-            content = f.read().strip()
-            return json.loads(content) if content else []
-    except Exception as e:
-        print(f"❌ Storage file system access fault: {e}")
-        return []'''
-
-'''def save_chat_history(chats):
-    try:
-        with open(CHAT_FILE, "w", encoding="utf-8") as f:
-            json.dump(chats, f, indent=4)
-            f.flush()
-            os.fsync(f.fileno())  
-    except Exception as e: 
-        print(f"❌ Storage write failure: {e}")'''
-
-
-#for private conversation for every student
+# Private browser session history control arrays
 def load_chat_history():
     """Loads a private chat history array unique to the current user's browser session."""
     if 'history' not in session:
@@ -151,7 +131,8 @@ def load_chat_history():
 def save_chat_history(chats):
     """Saves the chat array into the user's private session container."""
     session['history'] = chats
-    session.modified = True  # Tells Flask to save the updated cookie data
+    session.modified = True  
+
 # Initial system dataset boot load
 load_data()
 
@@ -177,91 +158,104 @@ def check_semantic_similarity(user_msg, target_strings, threshold=0.2):
                 return True
     return False
 
-def get_bot_response(user_message, chats):
-    """Resolves prompts by dynamically digging into sub-categories (like 'Basic') to find topics."""
-    load_data()  # Pulls fresh references from DATA.json
+# ------------------ DEEP NESTED OBJECT TRAVERSAL ENGINE ------------------
+def get_bot_response(user_message, database_json):
+    """
+    Precision-Ordered Retrieval Engine:
+    1. Intercepts short keyword topics directly to prevent ML confusion.
+    2. Runs conversational ML/Pattern checks ONLY for greetings, help, and exit intents.
+    3. Searches multi-category dictionary fields for technical topics and code sandboxes.
+    """
+    global ml_classifier_pipeline, intents
+    user_query = user_message.lower().strip()
+    fallback_response = "hey👋!.. can you ask something related to my knowledge... i am happy to give you answers 🥰"
     
-    # Standardize user input
-    clean_msg = user_message.lower().strip().replace("?", "").replace(",", "")
-    msg_words = clean_msg.split()
-    
-    # 🌟 LEVEL 1: CHECK INTENTS
-    if intents:
-        for intent in intents:
-            patterns = intent.get("patterns", [])
-            if check_semantic_similarity(clean_msg, patterns, threshold=0.45):
-                return random.choice(intent["responses"])
-
-    # 🌟 LEVEL 2: MULTI-LAYERED TOPIC COLLECTOR
-    matched_responses = []
-
-    if categ:
-        for cat_name, cat_data in categ.items():
-            # Create a list of dictionaries to inspect. 
-            # We check the main category layer AND any nested sub-layers (like "Basic")
-            layers_to_check = [cat_data]
-            
-            for key, value in cat_data.items():
-                if isinstance(value, dict):  # This finds blocks like "Basic", "Advanced", etc.
-                    layers_to_check.append(value)
-            
-            # Now scan all discovered layers for topics
-            # Now scan all discovered layers for topics
-            for layer in layers_to_check:
-              topics = layer.get("topics", [])
-    
-            for topic in topics:
-                     title = topic.get("title", "").lower().strip()
-        
-        # Exact match logic or smart n-gram evaluation
-                     exact_match = (clean_msg == title)
-                     word_match = any((word == title) for word in msg_words)
-                     similarity_match = check_semantic_similarity(clean_msg, [title], threshold=0.45)
-        
-        # 🌟 FIXED: Guard against single-character inputs triggers (like "c", "p", etc.)
-    if len(clean_msg) <= 2:
-                should_trigger = exact_match or word_match
+    # Secure database block from list wrappers safely
+    if isinstance(database_json, list) and len(database_json) > 0:
+        root_data = database_json[0]
     else:
-            should_trigger = (title in clean_msg) or word_match or similarity_match
-            
-    if should_trigger:
-            # Construct your layout card down here as usual...
-                        # Construct your layout card
-                        markdown_response = (
-                            f"# 🚀 Topic Found: {title.title()}\n"
-                            f"**Curriculum Category:** {cat_name.title()}\n\n"
-                            f"**Definition:** *{topic.get('definition', 'No definition provided.')}*\n\n"
-                            f"### 📘 Conceptual Breakdown:\n{topic.get('explanation', '')}\n\n"
-                        )
-                        
-                        # Append code windows if they exist
-                        examples = topic.get("code_examples", [])
-                        if examples:
-                            markdown_response += "### 💻 Applied Code Sandbox:\n"
-                            for example in examples:
-                                markdown_response += f"```\n{example}\n```\n"
-                                
-                        matched_responses.append(markdown_response)
+        root_data = database_json
 
-    # If matches were found across any depth of your JSON, return them combined
-    if matched_responses:
-        return "\n\n---\n\n".join(matched_responses)
+    # ⚡ STEP 1: KEYWORD INTERCEPT (Fixes the "python" / "java" generic mismatch bug)
+    if user_query in ["python", "learn python", "teach me python"]:
+        return "### 🐍 Python Track Active\nPython is a powerful, high-level language focused on code readability. Try asking me specific concepts like:\n* 👉 *'python syntax and indentation'*\n* 👉 *'list and sequence mastery'*\n* 👉 *'dictionaries and mapping'*"
+    
+    if user_query in ["java", "learn java", "i want to learn java"]:
+        return "### ☕ Java Track Active\nJava is a strongly-typed, object-oriented language used worldwide. Try asking me specific concepts like:\n* 👉 *'objects and classes'*\n* 👉 *'conditional logic'*\n* 👉 *'loops and iteration'*"
 
-    # ---------------------------------------------------------------------
-    # 3. Machine Learning Prediction via Naive Bayes (Fallback security)
+    if user_query in ["c", "c programming", "what about c programming"]:
+        return "### 💻 C Track Active\nC is a foundational system-level language that gives you complete power over memory allocation. Try asking me about:\n* 👉 *'memory management'*\n* 👉 *'arrays and collections'*"
+
+    # 🤖 STEP 2: CONVERSATIONAL INTENTS ONLY (Greetings, Help, Goodbye, Thanks)
+    # This prevents your ML model from overriding technical coding keywords!
     if ml_classifier_pipeline is not None:
         try:
             predicted_tag = ml_classifier_pipeline.predict([user_message])[0]
             probabilities = ml_classifier_pipeline.predict_proba([user_message])[0]
-            max_probability = np.max(probabilities)
             
-            if max_probability > 0.30 and predicted_tag != "fallback" and predicted_tag != "language_query":
+            # Only trigger ML if it's a known conversational tag and confidence is high
+            if predicted_tag in ["greeting", "help", "goodbye", "thanks", "response"] and np.max(probabilities) > 0.50:
                 for intent in intents:
                     if intent.get("tag") == predicted_tag:
-                        return random.choice(intent["responses"])
+                        return random.choice(intent.get("responses"))
         except Exception as e:
-            print(f"⚠️ Classifier inference notice: {e}")
-        return " hey👋!.. can you ask something related to my knowledge... i am happy to give you answers 🥰 "
+            print(f"⚠️ ML optimization bypass: {e}")
+
+    # 📁 STEP 3: BACKUP FLAT PATTERN MATCHING (For greetings/help without high ML confidence)
+    intents_list = root_data.get("intents", [])
+    for intent in intents_list:
+        if intent.get("tag") in ["greeting", "help", "goodbye", "thanks", "response"]:
+            patterns = intent.get("patterns", [])
+            if check_semantic_similarity(user_query, patterns, threshold=0.30):
+                return random.choice(intent.get("responses", [fallback_response]))
+
+    # 🗂️ STEP 4: DYNAMIC MULTI-CATEGORY TOPIC SEARCH
+    all_categories = root_data.get("categories", {})
+    for category_track_name, category_content in all_categories.items():
+        if not isinstance(category_content, dict):
+            continue
+            
+        # Check tracking names or history blocks
+        if f"history of {category_track_name.lower()}" in user_query or (category_track_name.lower() in user_query and "history" in user_query):
+            return f"# 📜 History of {category_track_name}\n{category_content.get('history')}"
+
+        # Loop through dynamic structural levels (Basic, Intermediate, Advanced, python Basic, etc.)
+        for level_key, level_value in category_content.items():
+            if isinstance(level_value, dict) and "topics" in level_value:
+                topics_list = level_value.get("topics", [])
+                
+                for topic in topics_list:
+                    title = topic.get("title", "").lower()
+                    intro = topic.get("intro", "").lower()
+                    
+                    # Search list metrics to clear out spelling typos (like "memmory")
+                    search_matrix = [title, intro]
+                    
+                    if (check_semantic_similarity(user_query, search_matrix, threshold=0.22) or 
+                        title in user_query or user_query in title):
+                        
+                        raw_explanation = topic.get("explanation", "")
+                        
+                        # Gather code sandbox elements
+                        code_blocks = ""
+                        examples = topic.get("code_examples", [])
+                        for example in examples:
+                            lang_tag = "python" if "python" in category_track_name.lower() else "c"
+                            code_blocks += f"\n\`\`\`{lang_tag}\n{example}\n\`\`\`\n"
+                        
+                        formatted_response = (
+                            f"# 🚀 Topic Found: {topic.get('title').title()}\n"
+                            f"**Track:** {category_track_name.title()} — [{level_key}]\n\n"
+                            f"**Introduction:** *{topic.get('intro')}*\n\n"
+                            f"### 📘 Conceptual Breakdown:\n{raw_explanation}\n"
+                        )
+                        if code_blocks:
+                            formatted_response += f"\n### 💻 Applied Code Sandbox:{code_blocks}"
+                            
+                        return formatted_response
+
+    # 🛑 STEP 5: SAFE ACCESSIBLE FALLBACK
+    return fallback_response
 # ------------------ FLASK WEB ROUTING ENDPOINTS ------------------
 
 @CHATBOT.route("/")
@@ -326,7 +320,9 @@ def chatbot_api():
             return jsonify({"response": "Please type a message 📝"})
 
         chats = load_chat_history()
-        bot_response = get_bot_response(user_message, chats)
+        
+        # 🌟 FIXED: Passing 'data' global textbook variable instead of user chat log list
+        bot_response = get_bot_response(user_message, data)
         
         # Dynamic conversational title auto-generation loop
         final_chat_name = chat_name
